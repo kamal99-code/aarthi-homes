@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aarthi Homes | Admin Dashboard</title>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Alex+Brush&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Alex+Brush&display=swap"
+        rel="stylesheet">
+
     <style>
         :root {
             --primary-wood: hsl(28, 41%, 50%);
@@ -19,9 +22,9 @@
             --text-dark: hsl(0, 0%, 15%);
             --text-muted: hsl(0, 0%, 45%);
             --white: #ffffff;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 15px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.15);
             --border-radius: 8px;
             --font-serif: 'Playfair Display', Georgia, serif;
             --font-sans: 'Outfit', sans-serif;
@@ -92,9 +95,20 @@
         }
 
         @keyframes pulse {
-            0% { transform: scale(0.9); opacity: 0.6; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(0.9); opacity: 0.6; }
+            0% {
+                transform: scale(0.9);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0.9);
+                opacity: 0.6;
+            }
         }
 
         .btn {
@@ -124,12 +138,12 @@
 
         .btn-secondary {
             background-color: transparent;
-            border: 1px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             color: var(--white);
         }
 
         .btn-secondary:hover {
-            background-color: rgba(255,255,255,0.1);
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         .btn-outline-dark {
@@ -174,7 +188,7 @@
             border-radius: var(--border-radius);
             padding: 1.5rem;
             box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
@@ -305,7 +319,7 @@
             border-radius: var(--border-radius);
             padding: 1.25rem;
             box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
             gap: 0.25rem;
@@ -331,7 +345,7 @@
             border-radius: var(--border-radius);
             padding: 1.5rem;
             box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
             gap: 1rem;
@@ -403,10 +417,25 @@
             font-weight: 600;
         }
 
-        .room-deluxe { background-color: #fef3c7; color: #d97706; }
-        .room-suite { background-color: #dbeafe; color: #2563eb; }
-        .room-villa { background-color: #e0e7ff; color: #4f46e5; }
-        .room-default { background-color: #e5e7eb; color: #4b5563; }
+        .room-deluxe {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        .room-suite {
+            background-color: #dbeafe;
+            color: #2563eb;
+        }
+
+        .room-villa {
+            background-color: #e0e7ff;
+            color: #4f46e5;
+        }
+
+        .room-default {
+            background-color: #e5e7eb;
+            color: #4b5563;
+        }
 
         .date-range {
             font-weight: 500;
@@ -457,8 +486,15 @@
         }
 
         @keyframes modalFadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .modal-content h2 {
@@ -495,18 +531,21 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- Passcode Modal -->
     <div id="login-modal" class="modal-overlay">
         <div class="modal-content">
-            <img src="assets/logo-vertical-dark.png" alt="Aarthi Homes Logo" style="height: 120px; width: auto; margin: 0 auto 1.5rem auto; display: block;">
+            <img src="assets/logo-vertical-dark.png" alt="Aarthi Homes Logo"
+                style="height: 160px; width: auto; margin: 0 auto 1.5rem auto; display: block;">
             <h2>Admin Authorization</h2>
             <p>Access to the Aarthi Homes reservation console is protected. Enter passcode to proceed.</p>
             <input type="password" id="passcode-input" class="form-control" placeholder="••••" maxlength="20" autofocus>
             <div id="login-error" class="error-message">Incorrect passcode. Please try again.</div>
             <button class="btn btn-primary btn-block" style="width: 100%;" id="login-btn">Authorize Access</button>
-            <p style="margin-top: 1rem; font-size: 0.75rem; color: var(--text-muted);">Default passcode: <code>aarthi123</code></p>
+            <p style="margin-top: 1rem; font-size: 0.75rem; color: var(--text-muted);">Default passcode:
+                <code>aarthi123</code></p>
         </div>
     </div>
 
@@ -514,8 +553,9 @@
     <div id="dashboard-content" class="hidden">
         <header>
             <div style="display: flex; align-items: center; gap: 12px;">
-                <img src="assets/logo-emblem.svg" alt="Aarthi Homes Emblem" style="height: 38px; width: auto;">
-                <h1 style="line-height: 1.2; font-family: var(--font-serif); font-size: 1.8rem; font-weight: 600;">Aarthi Homes <span>Admin Console</span></h1>
+                <img src="assets/logo-emblem.png" alt="Aarthi Homes Emblem" style="height: 48px; width: auto;">
+                <h1 style="line-height: 1.2; font-family: var(--font-serif); font-size: 1.8rem; font-weight: 600;">
+                    Aarthi Homes <span>Admin Console</span></h1>
             </div>
             <div class="header-actions">
                 <div class="status-badge">
@@ -530,17 +570,20 @@
             <!-- Left Column: Google Sheets Panel -->
             <div class="sidebar-panel">
                 <h2 class="panel-title">Google Sheets Sync</h2>
-                
+
                 <div class="form-group">
                     <label for="google-sheet-url">Apps Script Web App URL</label>
-                    <input type="text" id="google-sheet-url" class="form-control" placeholder="https://script.google.com/macros/s/.../exec">
+                    <input type="text" id="google-sheet-url" class="form-control"
+                        placeholder="https://script.google.com/macros/s/.../exec">
                     <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
                         Forms submit directly to this Google Sheet URL in real-time.
                     </p>
                 </div>
-                
+
                 <button class="btn btn-primary" style="width: 100%;" id="save-url-btn">Save Connector URL</button>
-                <div id="save-status" style="font-size: 0.8rem; font-weight: 600; color: #10b981; text-align: center; display: none;">URL saved successfully!</div>
+                <div id="save-status"
+                    style="font-size: 0.8rem; font-weight: 600; color: #10b981; text-align: center; display: none;">URL
+                    saved successfully!</div>
 
                 <!-- Integration Accordion Guide -->
                 <div class="accordion" id="guide-accordion">
@@ -557,7 +600,7 @@
                             <li>Go to <b>Extensions > Apps Script</b>.</li>
                             <li>Delete default script code and paste this:</li>
                         </ol>
-                        
+
                         <div style="position: relative;">
                             <code id="apps-script-code">function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
@@ -585,13 +628,14 @@
 }</code>
                             <button class="copy-btn" id="copy-script-btn">Copy</button>
                         </div>
-                        
+
                         <ol start="5" style="margin-top: 1rem;">
                             <li>Click the save icon, then click <b>Deploy > New Deployment</b>.</li>
                             <li>Choose <b>Web App</b> as deployment type.</li>
                             <li>Set "Execute as" to <b>Me</b>.</li>
                             <li>Set "Who has access" to <b>Anyone</b>.</li>
-                            <li>Click <b>Deploy</b>, authorize permissions, and copy the generated <b>Web App URL</b>.</li>
+                            <li>Click <b>Deploy</b>, authorize permissions, and copy the generated <b>Web App URL</b>.
+                            </li>
                             <li>Paste the URL in the input box above and click Save!</li>
                         </ol>
                     </div>
@@ -600,7 +644,7 @@
 
             <!-- Right Column: Inquiries List & Metrics -->
             <div class="main-panel">
-                
+
                 <!-- Metrics -->
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -609,31 +653,35 @@
                     </div>
                     <div class="stat-card">
                         <span class="label">Google Spreadsheet Status</span>
-                        <span class="value" id="stat-google" style="font-size: 1.35rem; margin-top: 0.5rem; color: var(--text-muted);">Not Connected</span>
+                        <span class="value" id="stat-google"
+                            style="font-size: 1.35rem; margin-top: 0.5rem; color: var(--text-muted);">Not
+                            Connected</span>
                     </div>
                 </div>
 
                 <!-- Table Card -->
                 <div class="table-card">
                     <div class="filter-row">
-                        <h2 class="panel-title" style="margin: 0; border: none; padding: 0;">Reservation Inquiries Backup</h2>
-                        
+                        <h2 class="panel-title" style="margin: 0; border: none; padding: 0;">Reservation Inquiries
+                            Backup</h2>
+
                         <div class="filter-controls">
                             <div class="search-box">
-                                <input type="text" id="search-input" class="form-control" placeholder="Search by name or phone...">
+                                <input type="text" id="search-input" class="form-control"
+                                    placeholder="Search by name or phone...">
                             </div>
-                            
+
                             <select id="room-filter" class="form-control" style="width: auto; min-width: 150px;">
                                 <option value="">All Rooms</option>
                                 <option value="Deluxe Room">Deluxe Room</option>
                                 <option value="Luxury Suite">Luxury Suite</option>
                                 <option value="Whole Villa">Whole Villa</option>
                             </select>
-                            
+
                             <button class="btn btn-outline-dark" id="export-csv-btn">
                                 Export CSV
                             </button>
-                            
+
                             <button class="btn btn-primary" id="refresh-btn" style="padding: 0.7rem;">
                                 Refresh
                             </button>
@@ -673,7 +721,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const passcodeHash = 'aarthi123'; // Default passcode
-            
+
             const loginModal = document.getElementById('login-modal');
             const passcodeInput = document.getElementById('passcode-input');
             const loginBtn = document.getElementById('login-btn');
@@ -790,10 +838,10 @@
                     const res = await fetch('/api/inquiries');
                     if (!res.ok) throw new Error('Failed to load backup database');
                     allInquiries = await res.json();
-                    
+
                     // Sort inquiries: newest first
                     allInquiries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-                    
+
                     renderInquiries();
                 } catch (error) {
                     tableBody.innerHTML = `<tr><td colspan="6" class="no-data" style="color: #ef4444;"><h3>Connection Error</h3><p>${error.message}</p></td></tr>`;
@@ -803,15 +851,15 @@
             function renderInquiries() {
                 const searchVal = searchInput.value.toLowerCase().trim();
                 const selectedRoom = roomFilter.value;
-                
+
                 const filtered = allInquiries.filter(item => {
-                    const matchesSearch = !searchVal || 
+                    const matchesSearch = !searchVal ||
                         (item.name && item.name.toLowerCase().includes(searchVal)) ||
                         (item.phone && item.phone.toLowerCase().includes(searchVal)) ||
                         (item.email && item.email.toLowerCase().includes(searchVal));
-                    
+
                     const matchesRoom = !selectedRoom || item.room === selectedRoom;
-                    
+
                     return matchesSearch && matchesRoom;
                 });
 
@@ -937,7 +985,7 @@
                 const encodedUri = encodeURI(csvContent);
                 const link = document.createElement('a');
                 link.setAttribute('href', encodedUri);
-                link.setAttribute('download', `Aarthi_Homes_Inquiries_${new Date().toISOString().slice(0,10)}.csv`);
+                link.setAttribute('download', `Aarthi_Homes_Inquiries_${new Date().toISOString().slice(0, 10)}.csv`);
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -954,4 +1002,5 @@
         });
     </script>
 </body>
+
 </html>
