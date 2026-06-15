@@ -180,10 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="spec-item"><strong>Scenic View</strong>${data.specs.view}</div>
                 </div>
                 <div class="modal-cta-box">
-                    <div class="room-price">
-                        <span class="price-val">${data.price}</span>
-                        <span class="price-unit">/ night</span>
-                    </div>
                     <a href="#contact" class="btn btn-primary" id="modal-book-now-btn">Book Room</a>
                 </div>
             </div>
