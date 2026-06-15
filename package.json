@@ -4,5 +4,8 @@
   "description": "Aarthi Homes Homestay Website",
   "dependencies": {
     "@supabase/supabase-js": "^2.43.4"
+  },
+  "scripts": {
+    "build": "echo 'Static deploy - no build needed'"
   }
 }
