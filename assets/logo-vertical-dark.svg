@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+    <defs>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&amp;display=swap');
+            .text-aarthi {
+                font-family: 'Alex Brush', cursive, Georgia, serif;
+                font-size: 85px;
+                fill: #4d5d2f;
+                text-anchor: middle;
+            }
+            .text-homes {
+                font-family: 'Alex Brush', cursive, Georgia, serif;
+                font-size: 72px;
+                fill: #003a8c;
+                text-anchor: middle;
+            }
+            .line-divider {
+                stroke: #4d5d2f;
+                stroke-width: 4;
+                stroke-linecap: round;
+            }
+        </style>
+    </defs>
+
+    <g transform="translate(150, 40)">
+        <!-- Left Crescent (Olive Green) -->
+        <path d="M 120 30 A 70 70 0 0 0 120 170 A 58 58 0 0 1 120 30" fill="#4d5d2f" />
+        
+        <!-- Right Crescent (Deep Blue) -->
+        <path d="M 80 170 A 70 70 0 0 0 80 30 A 58 58 0 0 1 80 170" fill="#003a8c" />
+        
+        <!-- Stylized Chevron "A" (Deep Blue) -->
+        <path d="M 72 128 L 100 62 L 128 128" fill="none" stroke="#003a8c" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+
+    <!-- Logo Text -->
+    <text x="250" y="325" class="text-aarthi">Aarthi</text>
+    <line x1="150" y1="350" x2="350" y2="350" class="line-divider" />
+    <text x="250" y="425" class="text-homes">Homes</text>
+</svg>

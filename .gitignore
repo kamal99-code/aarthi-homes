@@ -4,3 +4,6 @@ inquiries.json
 Thumbs.db
 .system_generated/
 *.log
+
+assets/Video.mp4
+.vercel

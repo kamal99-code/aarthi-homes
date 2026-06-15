@@ -305,19 +305,30 @@ h2 {
 }
 
 .logo {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    color: var(--white);
+    display: flex;
+    align-items: center;
 }
 
-.main-header.scrolled .logo {
-    color: var(--text-dark);
+.logo-light, .logo-dark {
+    height: 60px;
+    width: auto;
+    transition: var(--transition-fast);
 }
 
-.logo-accent {
-    color: var(--accent-gold);
+.main-header.scrolled .logo-light, .main-header.scrolled .logo-dark {
+    height: 48px;
+}
+
+.logo-dark {
+    display: none;
+}
+
+.main-header.scrolled .logo-light {
+    display: none;
+}
+
+.main-header.scrolled .logo-dark {
+    display: block;
 }
 
 .nav-menu ul {
@@ -1371,10 +1382,13 @@ h2 {
 }
 
 .footer-logo {
-    font-family: var(--font-heading);
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--white);
+    display: block;
+}
+
+.footer-logo-image {
+    height: 110px;
+    width: auto;
+    display: block;
 }
 
 .footer-desc {

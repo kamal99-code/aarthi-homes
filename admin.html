@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Alex+Brush&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -500,6 +500,7 @@
     <!-- Passcode Modal -->
     <div id="login-modal" class="modal-overlay">
         <div class="modal-content">
+            <img src="assets/logo-vertical-dark.svg" alt="Aarthi Homes Logo" style="height: 120px; width: auto; margin: 0 auto 1.5rem auto; display: block;">
             <h2>Admin Authorization</h2>
             <p>Access to the Aarthi Homes reservation console is protected. Enter passcode to proceed.</p>
             <input type="password" id="passcode-input" class="form-control" placeholder="••••" maxlength="20" autofocus>
@@ -512,7 +513,10 @@
     <!-- Main Dashboard Workspace -->
     <div id="dashboard-content" class="hidden">
         <header>
-            <h1>Aarthi Homes <span>Admin Console</span></h1>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="assets/logo-emblem.svg" alt="Aarthi Homes Emblem" style="height: 38px; width: auto;">
+                <h1 style="line-height: 1.2; font-family: var(--font-serif); font-size: 1.8rem; font-weight: 600;">Aarthi Homes <span>Admin Console</span></h1>
+            </div>
             <div class="header-actions">
                 <div class="status-badge">
                     <span class="status-dot"></span>
