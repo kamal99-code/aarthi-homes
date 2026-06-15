@@ -307,28 +307,28 @@ h2 {
 .logo {
     display: flex;
     align-items: center;
+    background-color: var(--white);
+    padding: 6px 14px;
+    border-radius: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: var(--transition-smooth);
 }
 
-.logo-light, .logo-dark {
-    height: 60px;
+.main-header.scrolled .logo {
+    box-shadow: none;
+    padding: 0;
+    background-color: transparent;
+}
+
+.logo-image {
+    height: 52px;
     width: auto;
-    transition: var(--transition-fast);
-}
-
-.main-header.scrolled .logo-light, .main-header.scrolled .logo-dark {
-    height: 48px;
-}
-
-.logo-dark {
-    display: none;
-}
-
-.main-header.scrolled .logo-light {
-    display: none;
-}
-
-.main-header.scrolled .logo-dark {
     display: block;
+    transition: var(--transition-smooth);
+}
+
+.main-header.scrolled .logo-image {
+    height: 48px;
 }
 
 .nav-menu ul {
