@@ -523,6 +523,33 @@ h2 {
         display: none;
         /* Hide phone text in narrow headers, keep inside contact sections */
     }
+
+    /* ---- Mobile logo sizing ---- */
+    .logo-light,
+    .logo-dark {
+        height: 52px;
+    }
+
+    .main-header.scrolled .logo-light,
+    .main-header.scrolled .logo-dark {
+        height: 44px;
+    }
+
+    /* Shrink header height on mobile */
+    .main-header {
+        height: 72px;
+    }
+
+    .main-header.scrolled {
+        height: 60px;
+    }
+}
+
+/* ---- Footer logo on small screens ---- */
+@media (max-width: 480px) {
+    .footer-logo-image {
+        height: 110px;
+    }
 }
 
 /* --- Hero Section --- */
