@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aarthi Homes | Admin Dashboard</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-wood: hsl(28, 41%, 50%);
+            --primary-wood-dark: hsl(28, 41%, 40%);
+            --accent-gold: hsl(43, 96%, 60%);
+            --bg-cream: hsl(30, 30%, 96%);
+            --text-dark: hsl(0, 0%, 15%);
+            --text-muted: hsl(0, 0%, 45%);
+            --white: #ffffff;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 15px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+            --border-radius: 8px;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Outfit', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Top Header Styling */
+        header {
+            background: linear-gradient(135deg, var(--text-dark), #2c2520);
+            color: var(--white);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-md);
+            border-bottom: 3px solid var(--primary-wood);
+        }
+
+        header h1 {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        header h1 span {
+            color: var(--accent-gold);
+            font-style: italic;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .status-badge {
+            background-color: rgba(52, 211, 153, 0.2);
+            color: #34d399;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--border-radius);
+            font-family: var(--font-sans);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border: none;
+            font-size: 0.95rem;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-wood);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-wood-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .btn-outline-dark {
+            background-color: transparent;
+            border: 1px solid var(--text-dark);
+            color: var(--text-dark);
+        }
+
+        .btn-outline-dark:hover {
+            background-color: var(--text-dark);
+            color: var(--white);
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        /* Container & Grid Layout */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sidebar Panels Styling */
+        .sidebar-panel {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            height: fit-content;
+        }
+
+        .panel-title {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            border-bottom: 2px solid var(--bg-cream);
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.7rem;
+            border-radius: var(--border-radius);
+            border: 1px solid #d1d5db;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-wood);
+            box-shadow: 0 0 0 3px rgba(184, 107, 51, 0.15);
+        }
+
+        /* Guide / Accordion Box */
+        .accordion {
+            border: 1px solid #e5e7eb;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .accordion-header {
+            background-color: var(--bg-cream);
+            padding: 0.8rem 1rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .accordion-content {
+            padding: 1rem;
+            display: none;
+            font-size: 0.85rem;
+            background-color: #fafaf9;
+            border-top: 1px solid #e5e7eb;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .accordion.open .accordion-content {
+            display: block;
+        }
+
+        .accordion-content ol {
+            padding-left: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .accordion-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            display: block;
+            background-color: #eae7e5;
+            color: #6b3e1f;
+            padding: 0.75rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            white-space: pre-wrap;
+            margin: 0.5rem 0;
+            overflow-x: auto;
+            border-left: 3px solid var(--primary-wood);
+        }
+
+        .copy-btn {
+            background-color: var(--primary-wood);
+            color: var(--white);
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            float: right;
+            margin-top: -30px;
+            margin-right: 5px;
+        }
+
+        /* Dashboard Main Panel */
+        .main-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 1.25rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .stat-card .label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            font-family: var(--font-serif);
+        }
+
+        /* Table Card & Filter Row */
+        .table-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            min-height: 400px;
+        }
+
+        .filter-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 250px;
+        }
+
+        /* Reservations Table */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: var(--border-radius);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            font-weight: 600;
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #f3f4f6;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #fafaf9;
+        }
+
+        .room-badge {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .room-deluxe { background-color: #fef3c7; color: #d97706; }
+        .room-suite { background-color: #dbeafe; color: #2563eb; }
+        .room-villa { background-color: #e0e7ff; color: #4f46e5; }
+        .room-default { background-color: #e5e7eb; color: #4b5563; }
+
+        .date-range {
+            font-weight: 500;
+        }
+
+        .timestamp {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .no-data h3 {
+            font-family: var(--font-serif);
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        /* Passcode Security Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(44, 37, 32, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            border-top: 5px solid var(--primary-wood);
+            animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-content h2 {
+            font-family: var(--font-serif);
+            margin-bottom: 1rem;
+        }
+
+        .modal-content p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-content .form-control {
+            text-align: center;
+            font-size: 1.25rem;
+            letter-spacing: 0.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-top: -1rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        /* Utility classes */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Passcode Modal -->
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Admin Authorization</h2>
+            <p>Access to the Aarthi Homes reservation console is protected. Enter passcode to proceed.</p>
+            <input type="password" id="passcode-input" class="form-control" placeholder="••••" maxlength="20" autofocus>
+            <div id="login-error" class="error-message">Incorrect passcode. Please try again.</div>
+            <button class="btn btn-primary btn-block" style="width: 100%;" id="login-btn">Authorize Access</button>
+            <p style="margin-top: 1rem; font-size: 0.75rem; color: var(--text-muted);">Default passcode: <code>aarthi123</code></p>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Workspace -->
+    <div id="dashboard-content" class="hidden">
+        <header>
+            <h1>Aarthi Homes <span>Admin Console</span></h1>
+            <div class="header-actions">
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    Live Local Server
+                </div>
+                <button class="btn btn-secondary btn-sm" id="logout-btn">Lock Console</button>
+            </div>
+        </header>
+
+        <main class="container">
+            <!-- Left Column: Google Sheets Panel -->
+            <div class="sidebar-panel">
+                <h2 class="panel-title">Google Sheets Sync</h2>
+                
+                <div class="form-group">
+                    <label for="google-sheet-url">Apps Script Web App URL</label>
+                    <input type="text" id="google-sheet-url" class="form-control" placeholder="https://script.google.com/macros/s/.../exec">
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+                        Forms submit directly to this Google Sheet URL in real-time.
+                    </p>
+                </div>
+                
+                <button class="btn btn-primary" style="width: 100%;" id="save-url-btn">Save Connector URL</button>
+                <div id="save-status" style="font-size: 0.8rem; font-weight: 600; color: #10b981; text-align: center; display: none;">URL saved successfully!</div>
+
+                <!-- Integration Accordion Guide -->
+                <div class="accordion" id="guide-accordion">
+                    <div class="accordion-header" id="accordion-toggle">
+                        <span>How to setup Google Sheets</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <ol>
+                            <li>Create a new <b>Google Sheet</b>.</li>
+                            <li>Configure column headers in row 1: <br>
+                                <code>Timestamp, Name, Phone, Email, Room, Check-in, Check-out, Guests, Notes</code>
+                            </li>
+                            <li>Go to <b>Extensions > Apps Script</b>.</li>
+                            <li>Delete default script code and paste this:</li>
+                        </ol>
+                        
+                        <div style="position: relative;">
+                            <code id="apps-script-code">function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([
+    new Date(),
+    data.name,
+    data.phone,
+    data.email,
+    data.room,
+    data.checkin,
+    data.checkout,
+    data.guests,
+    data.comments || ""
+  ]);
+  
+  var response = {
+    result: 'success',
+    message: 'Row appended successfully'
+  };
+  
+  return ContentService.createTextOutput(JSON.stringify(response))
+    .setMimeType(ContentService.MimeType.JSON)
+    .addHeader('Access-Control-Allow-Origin', '*');
+}</code>
+                            <button class="copy-btn" id="copy-script-btn">Copy</button>
+                        </div>
+                        
+                        <ol start="5" style="margin-top: 1rem;">
+                            <li>Click the save icon, then click <b>Deploy > New Deployment</b>.</li>
+                            <li>Choose <b>Web App</b> as deployment type.</li>
+                            <li>Set "Execute as" to <b>Me</b>.</li>
+                            <li>Set "Who has access" to <b>Anyone</b>.</li>
+                            <li>Click <b>Deploy</b>, authorize permissions, and copy the generated <b>Web App URL</b>.</li>
+                            <li>Paste the URL in the input box above and click Save!</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Inquiries List & Metrics -->
+            <div class="main-panel">
+                
+                <!-- Metrics -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="label">Total Inquiries</span>
+                        <span class="value" id="stat-total">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="label">Google Spreadsheet Status</span>
+                        <span class="value" id="stat-google" style="font-size: 1.35rem; margin-top: 0.5rem; color: var(--text-muted);">Not Connected</span>
+                    </div>
+                </div>
+
+                <!-- Table Card -->
+                <div class="table-card">
+                    <div class="filter-row">
+                        <h2 class="panel-title" style="margin: 0; border: none; padding: 0;">Reservation Inquiries Backup</h2>
+                        
+                        <div class="filter-controls">
+                            <div class="search-box">
+                                <input type="text" id="search-input" class="form-control" placeholder="Search by name or phone...">
+                            </div>
+                            
+                            <select id="room-filter" class="form-control" style="width: auto; min-width: 150px;">
+                                <option value="">All Rooms</option>
+                                <option value="Deluxe Room">Deluxe Room</option>
+                                <option value="Luxury Suite">Luxury Suite</option>
+                                <option value="Whole Villa">Whole Villa</option>
+                            </select>
+                            
+                            <button class="btn btn-outline-dark" id="export-csv-btn">
+                                Export CSV
+                            </button>
+                            
+                            <button class="btn btn-primary" id="refresh-btn" style="padding: 0.7rem;">
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Grid Table -->
+                    <div class="table-wrapper">
+                        <table id="inquiry-table">
+                            <thead>
+                                <tr>
+                                    <th>Submission Time</th>
+                                    <th>Guest Details</th>
+                                    <th>Room Selected</th>
+                                    <th>Stay Dates</th>
+                                    <th>Guests & Notes</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <tr>
+                                    <td colspan="6" class="no-data">
+                                        <h3>Loading Inquiries...</h3>
+                                        <p>Fetching local backup from inquiries.json</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripting Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const passcodeHash = 'aarthi123'; // Default passcode
+            
+            const loginModal = document.getElementById('login-modal');
+            const passcodeInput = document.getElementById('passcode-input');
+            const loginBtn = document.getElementById('login-btn');
+            const loginError = document.getElementById('login-error');
+            const dashboardContent = document.getElementById('dashboard-content');
+            const logoutBtn = document.getElementById('logout-btn');
+
+            // Google Sheets URL references
+            const googleSheetUrlInput = document.getElementById('google-sheet-url');
+            const saveUrlBtn = document.getElementById('save-url-btn');
+            const saveStatus = document.getElementById('save-status');
+
+            // Accordion controls
+            const accordionToggle = document.getElementById('accordion-toggle');
+            const accordion = document.getElementById('guide-accordion');
+
+            // Table References
+            const tableBody = document.getElementById('table-body');
+            const statTotal = document.getElementById('stat-total');
+            const statGoogle = document.getElementById('stat-google');
+            const searchInput = document.getElementById('search-input');
+            const roomFilter = document.getElementById('room-filter');
+            const refreshBtn = document.getElementById('refresh-btn');
+            const exportCsvBtn = document.getElementById('export-csv-btn');
+
+            let allInquiries = [];
+
+            // --- Authentication ---
+            function checkAuth() {
+                const sessionAuth = sessionStorage.getItem('aarthi_auth');
+                if (sessionAuth === 'true') {
+                    showDashboard();
+                }
+            }
+
+            function handleAuth() {
+                const val = passcodeInput.value;
+                if (val === passcodeHash) {
+                    sessionStorage.setItem('aarthi_auth', 'true');
+                    showDashboard();
+                } else {
+                    loginError.style.display = 'block';
+                    passcodeInput.value = '';
+                    passcodeInput.focus();
+                }
+            }
+
+            function showDashboard() {
+                loginModal.classList.add('hidden');
+                dashboardContent.classList.remove('hidden');
+                loadSettings();
+                fetchInquiries();
+            }
+
+            loginBtn.addEventListener('click', handleAuth);
+            passcodeInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleAuth();
+            });
+
+            logoutBtn.addEventListener('click', () => {
+                sessionStorage.removeItem('aarthi_auth');
+                window.location.reload();
+            });
+
+            // --- Google Sheets URL settings management ---
+            function loadSettings() {
+                const savedUrl = localStorage.getItem('google_sheet_url');
+                if (savedUrl) {
+                    googleSheetUrlInput.value = savedUrl;
+                    statGoogle.innerText = 'Connected';
+                    statGoogle.style.color = '#10b981';
+                } else {
+                    statGoogle.innerText = 'Not Connected';
+                    statGoogle.style.color = 'var(--text-muted)';
+                }
+            }
+
+            saveUrlBtn.addEventListener('click', () => {
+                const url = googleSheetUrlInput.value.trim();
+                if (url) {
+                    localStorage.setItem('google_sheet_url', url);
+                    statGoogle.innerText = 'Connected';
+                    statGoogle.style.color = '#10b981';
+                } else {
+                    localStorage.removeItem('google_sheet_url');
+                    statGoogle.innerText = 'Not Connected';
+                    statGoogle.style.color = 'var(--text-muted)';
+                }
+                saveStatus.style.display = 'block';
+                setTimeout(() => {
+                    saveStatus.style.display = 'none';
+                }, 3000);
+            });
+
+            // --- Accordion Setup ---
+            accordionToggle.addEventListener('click', () => {
+                accordion.classList.toggle('open');
+            });
+
+            // Copy Apps Script code to clipboard
+            document.getElementById('copy-script-btn').addEventListener('click', () => {
+                const codeElement = document.getElementById('apps-script-code');
+                navigator.clipboard.writeText(codeElement.innerText).then(() => {
+                    const btn = document.getElementById('copy-script-btn');
+                    btn.innerText = 'Copied!';
+                    setTimeout(() => { btn.innerText = 'Copy'; }, 2000);
+                });
+            });
+
+            // --- Inquiry Fetching & Rendering ---
+            async function fetchInquiries() {
+                try {
+                    tableBody.innerHTML = `<tr><td colspan="6" class="no-data"><h3>Loading Inquiries...</h3><p>Fetching local backup from inquiries.json</p></td></tr>`;
+                    const res = await fetch('/api/inquiries');
+                    if (!res.ok) throw new Error('Failed to load backup database');
+                    allInquiries = await res.json();
+                    
+                    // Sort inquiries: newest first
+                    allInquiries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                    
+                    renderInquiries();
+                } catch (error) {
+                    tableBody.innerHTML = `<tr><td colspan="6" class="no-data" style="color: #ef4444;"><h3>Connection Error</h3><p>${error.message}</p></td></tr>`;
+                }
+            }
+
+            function renderInquiries() {
+                const searchVal = searchInput.value.toLowerCase().trim();
+                const selectedRoom = roomFilter.value;
+                
+                const filtered = allInquiries.filter(item => {
+                    const matchesSearch = !searchVal || 
+                        (item.name && item.name.toLowerCase().includes(searchVal)) ||
+                        (item.phone && item.phone.toLowerCase().includes(searchVal)) ||
+                        (item.email && item.email.toLowerCase().includes(searchVal));
+                    
+                    const matchesRoom = !selectedRoom || item.room === selectedRoom;
+                    
+                    return matchesSearch && matchesRoom;
+                });
+
+                statTotal.innerText = filtered.length;
+
+                if (filtered.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="6" class="no-data"><h3>No Inquiries Found</h3><p>Try resetting filters or checking the server logs.</p></td></tr>`;
+                    return;
+                }
+
+                tableBody.innerHTML = '';
+                filtered.forEach(item => {
+                    // Date display formatting
+                    const submittedDate = new Date(item.timestamp).toLocaleString('en-IN', {
+                        day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+                    });
+
+                    // Room classes
+                    let roomClass = 'room-default';
+                    if (item.room === 'Deluxe Room') roomClass = 'room-deluxe';
+                    else if (item.room === 'Luxury Suite') roomClass = 'room-suite';
+                    else if (item.room === 'Whole Villa') roomClass = 'room-villa';
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>
+                            <span class="timestamp">${submittedDate}</span>
+                        </td>
+                        <td>
+                            <strong>${item.name || 'Anonymous'}</strong><br>
+                            <span class="timestamp">${item.phone || 'N/A'}</span><br>
+                            <span class="timestamp">${item.email || 'N/A'}</span>
+                        </td>
+                        <td>
+                            <span class="room-badge ${roomClass}">${item.room || 'Not Selected'}</span>
+                        </td>
+                        <td>
+                            <div class="date-range">
+                                📅 <strong>In:</strong> ${formatSimpleDate(item.checkin)}<br>
+                                📅 <strong>Out:</strong> ${formatSimpleDate(item.checkout)}
+                            </div>
+                        </td>
+                        <td>
+                            <strong>Guests:</strong> ${item.guests || 1}<br>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); max-width: 300px; overflow-wrap: break-word;">
+                                ${item.comments ? `"${item.comments}"` : '<em>No extra comments</em>'}
+                            </p>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-sm delete-btn" data-id="${item.id}" style="padding: 0.35rem 0.65rem; font-size: 0.8rem;">
+                                Delete
+                            </button>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+
+                // Attach event listeners to delete buttons
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const id = e.target.getAttribute('data-id');
+                        if (confirm('Are you sure you want to delete this backup entry? This will only remove it from the local server inquiries.json, not your Google Sheet.')) {
+                            await deleteInquiry(id);
+                        }
+                    });
+                });
+            }
+
+            async function deleteInquiry(id) {
+                try {
+                    const res = await fetch('/api/inquiry/delete', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: id })
+                    });
+                    if (res.ok) {
+                        fetchInquiries();
+                    } else {
+                        alert('Failed to delete inquiries. Check server terminal logs.');
+                    }
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                }
+            }
+
+            function formatSimpleDate(dateStr) {
+                if (!dateStr) return 'N/A';
+                return new Date(dateStr).toLocaleDateString('en-IN', {
+                    day: 'numeric', month: 'short', year: 'numeric'
+                });
+            }
+
+            // --- Filter Actions ---
+            searchInput.addEventListener('input', renderInquiries);
+            roomFilter.addEventListener('change', renderInquiries);
+            refreshBtn.addEventListener('click', fetchInquiries);
+
+            // --- CSV Export ---
+            exportCsvBtn.addEventListener('click', () => {
+                if (allInquiries.length === 0) {
+                    alert('No inquiry records to export!');
+                    return;
+                }
+
+                let csvContent = 'data:text/csv;charset=utf-8,';
+                csvContent += 'Submission Time,Guest Name,Phone,Email,Room Type,Check-In,Check-Out,Guests,Comments\n';
+
+                allInquiries.forEach(item => {
+                    const row = [
+                        new Date(item.timestamp).toISOString(),
+                        escapeCsvValue(item.name),
+                        escapeCsvValue(item.phone),
+                        escapeCsvValue(item.email),
+                        escapeCsvValue(item.room),
+                        item.checkin || '',
+                        item.checkout || '',
+                        item.guests || 1,
+                        escapeCsvValue(item.comments)
+                    ];
+                    csvContent += row.join(',') + '\n';
+                });
+
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement('a');
+                link.setAttribute('href', encodedUri);
+                link.setAttribute('download', `Aarthi_Homes_Inquiries_${new Date().toISOString().slice(0,10)}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+
+            function escapeCsvValue(val) {
+                if (!val) return '""';
+                let text = val.toString().replace(/"/g, '""');
+                return `"${text}"`;
+            }
+
+            // Run initial check
+            checkAuth();
+        });
+    </script>
+</body>
+</html>

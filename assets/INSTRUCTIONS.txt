@@ -1,0 +1,35 @@
+==========================================================================
+AARTHI HOMES KODAIKANAL - MEDIA ASSETS DIRECTORY
+==========================================================================
+
+Please save your original photos and videos directly into this directory (d:\antygravity IDE\assets\) using the exact filenames listed below. 
+
+The website's code and image lightbox are pre-configured to load these files:
+
+1. "balcony.jpg"
+   -> The balcony view overlooking the valley (with the tan chairs and square table).
+
+2. "bedroom.jpg"
+   -> The main wide bedroom photo showing the bed (with swan towels, logo-embroidered pillows, and the palm leaf mural).
+
+3. "bedroom_ceiling.jpg"
+   -> The bedroom ceiling shot showcasing the recessed LED line lights.
+
+4. "nook.jpg"
+   -> The cozy indoor nook containing the two armchairs and small table.
+
+5. "corridor.jpg"
+   -> The corridor/verandah walk with the red terracotta geometric screens.
+
+6. "exterior.jpg"
+   -> The close-up drone shot showing the building facade and the white SUV.
+
+7. "aerial_valley.jpg"
+   -> The wide drone shot showing the step farming terraces and mountain valley.
+
+8. "video.mp4"
+   -> The video tour or clip of the stay (this will play in the background of the hero section).
+
+Note on Image Formats:
+---------------------
+If your images have a ".jpeg" or ".png" extension, you can either rename their extensions to ".jpg" to match the code, or edit the filenames in `index.html` and `app.js` to match your extensions. For the best loading performance, we recommend compressing the images before saving.

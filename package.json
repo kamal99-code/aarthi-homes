@@ -1,0 +1,8 @@
+{
+  "name": "aarthi-homes",
+  "version": "1.0.0",
+  "description": "Aarthi Homes Homestay Website",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.43.4"
+  }
+}
