@@ -384,6 +384,11 @@ select:focus {
   background-color: rgba(9, 11, 15, 0.95);
 }
 
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
 .input-with-suffix,
 .input-with-prefix {
   position: relative;
