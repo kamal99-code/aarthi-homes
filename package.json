@@ -1,11 +1,13 @@
 {
-  "name": "aarthi-homes",
+  "name": "overdraft-interest-calculator",
   "version": "1.0.0",
-  "description": "Aarthi Homes Homestay Website",
+  "type": "module",
+  "description": "Overdraft Interest Calculator with Supabase and Google Sheets integration",
   "dependencies": {
     "@supabase/supabase-js": "^2.43.4"
   },
   "scripts": {
-    "build": "echo 'Static deploy - no build needed'"
+    "dev": "node server.js",
+    "build": "echo 'No build needed'"
   }
 }

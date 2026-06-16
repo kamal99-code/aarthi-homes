@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Aarthi Homes - Premium boutique homestay in Attuvampatti, Kodaikanal. Nestled in misty valleys and terraced step farms, offering cozy wood-paneled rooms and scenic mountain views.">
+    <meta name="keywords"
+        content="Aarthi Homes, Kodaikanal homestay, Attuvampatti villa, Kodaikanal booking, luxury homestay Kodaikanal, mountain stay India">
+    <title>Aarthi Homes | Premium Homestay in Kodaikanal</title>
+
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content="Aarthi Homes | Premium Homestay in Kodaikanal">
+    <meta property="og:description"
+        content="Unwind in luxury at our boutique homestay in Attuvampatti, Kodaikanal. Stunning valley views, cozy modern rooms, and warm hospitality.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://aarathihomes.com">
+    <meta property="og:image" content="assets/11.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Alex+Brush&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+    <!-- Header / Navigation -->
+    <header class="main-header" id="header">
+        <div class="header-container">
+            <a href="#home" class="logo">
+                <img src="assets/logo-horizontal-light.png" alt="Aarthi Homes Logo" class="logo-light">
+                <img src="assets/logo-horizontal-dark.png" alt="Aarthi Homes Logo" class="logo-dark">
+            </a>
+
+            <nav class="nav-menu" id="nav-menu">
+                <ul>
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#rooms" class="nav-link">Rooms</a></li>
+                    <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                    <li><a href="#experiences" class="nav-link">Experiences</a></li>
+                    <li><a href="#location" class="nav-link">Location</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="mobile-cta-wrapper">
+                    <a href="#contact" class="btn btn-primary nav-cta">Book Now</a>
+                </div>
+            </nav>
+
+            <div class="header-right">
+                <a href="tel:+919944881180" class="phone-link">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    <span>+91 99448 81180</span>
+                </a>
+                <a href="#contact" class="btn btn-primary header-cta">Book Now</a>
+                <button class="mobile-menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- Hero Section -->
+        <section class="hero-section" id="home">
+            <!-- Background video container, fallback to image if video not loaded -->
+            <div class="hero-bg-wrapper">
+                <video autoplay loop muted playsinline class="hero-video" id="hero-video">
+                    <source src="assets/Video.mp4" type="video/mp4">
+                    <!-- Fallback will be handled via CSS background or image tag -->
+                </video>
+                <div class="hero-overlay"></div>
+            </div>
+
+            <div class="hero-content-container">
+                <div class="hero-content">
+                    <span class="hero-badge">Boutique Homestay in Kodaikanal</span>
+                    <h1>A Luxury Sanctuary in Kodaikanal's Misty Valleys</h1>
+                    <p>Experience authentic mountain warmth, cozy modern wood-paneled suites, and breathtaking panoramas
+                        of green terraced hills in peaceful Attuvampatti.</p>
+                    <div class="hero-actions">
+                        <a href="#rooms" class="btn btn-primary btn-lg">Explore Suites</a>
+                        <a href="#about" class="btn btn-outline btn-lg">Our Story</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Floating Booking Quick Bar -->
+            <div class="booking-quick-bar">
+                <form class="quick-bar-form" id="quick-booking-form">
+                    <div class="form-group-inline">
+                        <label for="quick-checkin">Check In</label>
+                        <input type="date" id="quick-checkin" required>
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="quick-checkout">Check Out</label>
+                        <input type="date" id="quick-checkout" required>
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="quick-guests">Guests</label>
+                        <select id="quick-guests">
+                            <option value="1">1 Guest</option>
+                            <option value="2" selected>2 Guests</option>
+                            <option value="3">3 Guests</option>
+                            <option value="4">4 Guests</option>
+                            <option value="5">5+ Guests</option>
+                        </select>
+                    </div>
+                    <div class="form-group-inline">
+                        <label for="quick-room">Suite Type</label>
+                        <select id="quick-room">
+                            <option value="deluxe">Deluxe Balcony Suite</option>
+                            <option value="valley">Valley View Suite</option>
+                            <option value="cottage">Garden Cottage</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary quick-submit">
+                        <span>Check Availability</span>
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+
+            <div class="scroll-indicator">
+                <span>Scroll to Explore</span>
+                <div class="mouse-icon">
+                    <div class="wheel"></div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- About Section -->
+        <section class="about-section section-padding" id="about">
+            <div class="container">
+                <div class="grid grid-2-col align-center">
+
+                    <div class="about-images">
+                        <div class="image-box main-img-box">
+                            <img src="assets/11.png" alt="Aarthi Homes Kodaikanal Hills Location"
+                                class="img-responsive rounded shadow"
+                                onerror="this.src='https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=800&q=80'">
+                        </div>
+                        <div class="image-box overlapping-img-box shadow">
+                            <img src="assets/12.png" alt="Aarthi Homes Exterior Architecture"
+                                class="img-responsive rounded"
+                                onerror="this.src='https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80'">
+                        </div>
+                    </div>
+
+                    <div class="about-text">
+                        <span class="section-tag">Welcome to Aarthi Homes</span>
+                        <h2>Escape to Kodaikanal's Pristine Hillside</h2>
+                        <p class="lead">Perched gracefully on the slopes of Attuvampatti, Aarthi Homes presents a
+                            gorgeous fusion of contemporary architecture and rustic warmth.</p>
+                        <p>Our boutique villa stands out with its red gabled roof, charcoal facades, and terracotta
+                            accents. Surrounded by green valleys and the signature terraced step-farming of Kodaikanal,
+                            we offer a tranquil, fog-kissed haven away from the town center's hustle, yet keep you close
+                            to iconic attractions.</p>
+
+                        <div class="amenities-highlights">
+                            <div class="highlight-item">
+                                <div class="highlight-icon">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                                    </svg>
+                                </div>
+                                <div class="highlight-info">
+                                    <h3>Cozy Space Heaters</h3>
+                                    <p>Stay snug during chilly Kodaikanal nights.</p>
+                                </div>
+                            </div>
+                            <div class="highlight-item">
+                                <div class="highlight-icon">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                                    </svg>
+                                </div>
+                                <div class="highlight-info">
+                                    <h3>Terraced Valley Trails</h3>
+                                    <p>Explore winding farms right at our doorstep.</p>
+                                </div>
+                            </div>
+                            <div class="highlight-item">
+                                <div class="highlight-icon">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+                                    </svg>
+                                </div>
+                                <div class="highlight-info">
+                                    <h3>Campfire Evenings</h3>
+                                    <p>Gather under starry skies by the crackling flame.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Accommodations / Rooms Section -->
+        <section class="rooms-section section-padding bg-light" id="rooms">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-tag">Our Sanctuary Rooms</span>
+                    <h2>Luxurious Spaces Tailored for Comfort</h2>
+                    <p class="section-subtitle">Immerse yourself in clean modern design, high ceilings, custom
+                        embroidered linens, and warm linear LED lighting systems.</p>
+                </div>
+
+                <div class="grid grid-3-col">
+
+                    <!-- Room Card 1 -->
+                    <div class="room-card card shadow-hover">
+                        <div class="room-img-wrapper">
+                            <img src="assets/bedroom.jpg" alt="Deluxe Balcony Suite" class="img-responsive"
+                                onerror="this.src='https://images.unsplash.com/photo-1611891487122-2075b96244e1?auto=format&fit=crop&w=600&q=80'">
+                            <div class="room-badge">Featured Room</div>
+                        </div>
+                        <div class="room-content">
+                            <div class="room-meta">
+                                <span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                    </svg> Premium Suite</span>
+                                <span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                        <line x1="9" y1="3" x2="9" y2="21" />
+                                    </svg> 400 sq.ft</span>
+                            </div>
+                            <h3>Deluxe Balcony Suite</h3>
+                            <p>Featuring light-oak wood panels, a signature designer leaf mural wall, plush king bedding
+                                with custom embroidery, and sliding glass doors leading directly to a private balcony.
+                            </p>
+                            <ul class="room-amenities">
+                                <li>Fireplace / Heater</li>
+                                <li>Private Balcony</li>
+                                <li>Work Desk</li>
+                                <li>Electric Kettle</li>
+                            </ul>
+                            <div class="room-footer">
+                                <button class="btn btn-outline btn-sm room-details-btn" data-room="deluxe">View
+                                    Details</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Room Card 2 -->
+                    <div class="room-card card shadow-hover">
+                        <div class="room-img-wrapper">
+                            <img src="assets/balcony.jpg" alt="Pine Valley View Cottage" class="img-responsive"
+                                onerror="this.src='https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=600&q=80'">
+                        </div>
+                        <div class="room-content">
+                            <div class="room-meta">
+                                <span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                    </svg> Valley View</span>
+                                <span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                        <line x1="9" y1="3" x2="9" y2="21" />
+                                    </svg> 450 sq.ft</span>
+                            </div>
+                            <h3>Pine Valley Cottage</h3>
+                            <p>Enjoy spectacular, panoramic valley vistas from your outdoor chairs. Connects directly to
+                                the beautiful clay jaali corridor. Features warm lighting and cozy indoor armchairs.</p>
+                            <ul class="room-amenities">
+                                <li>Balcony Chairs</li>
+                                <li>Indoor Nook</li>
+                                <li>Clay Jaali Access</li>
+                                <li>LED Ceiling Lines</li>
+                            </ul>
+                            <div class="room-footer">
+                                <button class="btn btn-outline btn-sm room-details-btn" data-room="valley">View
+                                    Details</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Room Card 3 -->
+                    <div class="room-card card shadow-hover">
+                        <div class="room-img-wrapper">
+                            <img src="assets/08.jpg" alt="Terracotta Jaali Room" class="img-responsive"
+                                onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80'">
+                        </div>
+                        <div class="room-content">
+                            <div class="room-meta">
+                                <span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                    </svg> Garden Level</span>
+                                <span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                        <line x1="9" y1="3" x2="9" y2="21" />
+                                    </svg> 350 sq.ft</span>
+                            </div>
+                            <h3>Terrace View Suite</h3>
+                            <p>Located next to the stunning terracotta masonry archways, this suite provides direct
+                                access to the garden pathway, private vanity space, and high oak-paneled mirrors.</p>
+                            <ul class="room-amenities">
+                                <li>Lattice Screens</li>
+                                <li>Built-in Vanity</li>
+                                <li>Hot Water</li>
+                                <li>Space Heater</li>
+                            </ul>
+                            <div class="room-footer">
+                                <button class="btn btn-outline btn-sm room-details-btn" data-room="terrace">View
+                                    Details</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Interactive Gallery Section -->
+        <section class="gallery-section section-padding" id="gallery">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-tag">Aarthi Homes Gallery</span>
+                    <h2>A Glimpse of True Mountain Luxury</h2>
+                    <p class="section-subtitle">Browse original photos showcasing our modern rooms, architectural
+                        designs, and the stunning Kodaikanal nature framing our homestay.</p>
+                </div>
+
+                <div class="gallery-grid" id="gallery-grid">
+
+                    <div class="gallery-item large-span" data-src="assets/11.png">
+                        <img src="assets/11.png" alt="Aerial Valley View showing Step Farming" class="img-responsive"
+                            onerror="this.src='https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=800&q=80'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-category">Scenic Surroundings</span>
+                            <h3>Misty Valley & Step Farming</h3>
+                            <div class="zoom-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    <line x1="11" y1="8" x2="11" y2="14" />
+                                    <line x1="8" y1="11" x2="14" y2="11" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item" data-src="assets/12.png">
+                        <img src="assets/12.png" alt="Aarthi Homes Exterior" class="img-responsive"
+                            onerror="this.src='https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-category">Architecture</span>
+                            <h3>Modern Stone & Brick Villa</h3>
+                            <div class="zoom-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    <line x1="11" y1="8" x2="11" y2="14" />
+                                    <line x1="8" y1="11" x2="14" y2="11" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item" data-src="assets/bedroom.jpg">
+                        <img src="assets/bedroom.jpg" alt="Deluxe Bedroom Interiors" class="img-responsive"
+                            onerror="this.src='https://images.unsplash.com/photo-1611891487122-2075b96244e1?auto=format&fit=crop&w=600&q=80'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-category">Interior</span>
+                            <h3>Deluxe Bedroom Suite</h3>
+                            <div class="zoom-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    <line x1="11" y1="8" x2="11" y2="14" />
+                                    <line x1="8" y1="11" x2="14" y2="11" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item" data-src="assets/balcony.jpg">
+                        <img src="assets/balcony.jpg" alt="Cozy Balcony Chairs View" class="img-responsive"
+                            onerror="this.src='https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=600&q=80'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-category">Exterior View</span>
+                            <h3>Scenic Balcony Lookout</h3>
+                            <div class="zoom-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    <line x1="11" y1="8" x2="11" y2="14" />
+                                    <line x1="8" y1="11" x2="14" y2="11" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item" data-src="assets/08.jpg">
+                        <img src="assets/08.jpg" alt="Walkway with Terracotta Jaali Screens" class="img-responsive"
+                            onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-category">Walkway</span>
+                            <h3>Terracotta Jaali Corridor</h3>
+                            <div class="zoom-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    <line x1="11" y1="8" x2="11" y2="14" />
+                                    <line x1="8" y1="11" x2="14" y2="11" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item" data-src="assets/nook.jpg">
+                        <img src="assets/nook.jpg" alt="Indoor Seating Nook Chairs" class="img-responsive"
+                            onerror="this.src='https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=600&q=80'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-category">Interior</span>
+                            <h3>Cozy Seating Corner</h3>
+                            <div class="zoom-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    <line x1="11" y1="8" x2="11" y2="14" />
+                                    <line x1="8" y1="11" x2="14" y2="11" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item" data-src="assets/bedroom_ceiling.jpg">
+                        <img src="assets/bedroom_ceiling.jpg" alt="Ceiling recessed LED line lighting design"
+                            class="img-responsive"
+                            onerror="this.src='https://images.unsplash.com/photo-1611891487122-2075b96244e1?auto=format&fit=crop&w=600&q=80'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-category">Lighting Design</span>
+                            <h3>Recessed Ceiling Line LEDs</h3>
+                            <div class="zoom-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    <line x1="11" y1="8" x2="11" y2="14" />
+                                    <line x1="8" y1="11" x2="14" y2="11" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item" data-src="assets/05.jpg">
+                        <img src="assets/05.jpg" alt="Deluxe Bedroom Suite Wide Angle" class="img-responsive"
+                            onerror="this.src='https://images.unsplash.com/photo-1611891487122-2075b96244e1?auto=format&fit=crop&w=600&q=80'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-category">Interior</span>
+                            <h3>Deluxe Suite Space</h3>
+                            <div class="zoom-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    <line x1="11" y1="8" x2="11" y2="14" />
+                                    <line x1="8" y1="11" x2="14" y2="11" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item" data-src="assets/06.jpg">
+                        <img src="assets/06.jpg" alt="Oak Wood lattice Screen and dressing Vanity mirror"
+                            class="img-responsive"
+                            onerror="this.src='https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=600&q=80'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-category">Interior Detail</span>
+                            <h3>Lattice Partition & Vanity</h3>
+                            <div class="zoom-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    <line x1="11" y1="8" x2="11" y2="14" />
+                                    <line x1="8" y1="11" x2="14" y2="11" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item" data-src="assets/07.jpg">
+                        <img src="assets/07.jpg" alt="King Bed and Palm Mural details with ceiling LED lighting"
+                            class="img-responsive"
+                            onerror="this.src='https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=600&q=80'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-category">Interior Detail</span>
+                            <h3>Muted Palm Mural & Bed</h3>
+                            <div class="zoom-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    <line x1="11" y1="8" x2="11" y2="14" />
+                                    <line x1="8" y1="11" x2="14" y2="11" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item" data-src="assets/10.jpg">
+                        <img src="assets/10.jpg" alt="Deluxe bedroom looking out towards the balcony and valley"
+                            class="img-responsive"
+                            onerror="this.src='https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?auto=format&fit=crop&w=600&q=80'">
+                        <div class="gallery-overlay">
+                            <span class="gallery-category">Interior View</span>
+                            <h3>Suite Balcony Outlook</h3>
+                            <div class="zoom-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    <line x1="11" y1="8" x2="11" y2="14" />
+                                    <line x1="8" y1="11" x2="14" y2="11" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Experiences Section -->
+        <section class="experiences-section section-padding bg-light" id="experiences">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-tag">Kodaikanal Experiences</span>
+                    <h2>Moments Crafted to Last</h2>
+                    <p class="section-subtitle">Make your stay at Aarthi Homes unforgettable with unique experiences
+                        celebrating Kodaikanal's fresh atmosphere.</p>
+                </div>
+
+                <div class="grid grid-3-col">
+
+                    <div class="experience-card card shadow-hover">
+                        <div class="exp-img-wrapper">
+                            <img src="assets/breakfast.png" alt="Authentic South Indian Breakfast"
+                                class="img-responsive"
+                                onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80'">
+                        </div>
+                        <div class="exp-content">
+                            <h3>Authentic Home Dining</h3>
+                            <p>Indulge in steaming, freshly prepared local delicacies. From soft idlis and crisp dosas
+                                to warm hill-station lunches, our dishes are served hot and prepared with a touch of
+                                home.</p>
+                        </div>
+                    </div>
+
+                    <div class="experience-card card shadow-hover">
+                        <div class="exp-img-wrapper">
+                            <img src="assets/campfire.png" alt="Campfire under Starry Sky" class="img-responsive"
+                                onerror="this.src='https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=600&q=80'">
+                        </div>
+                        <div class="exp-content">
+                            <h3>Campfire & Star-Gazing</h3>
+                            <p>When the cold mountain air rolls down the valley, gather around our custom campfire zone.
+                                Enjoy the crackling fire, hot beverages, and watch the starry night sky over the pine
+                                trees.</p>
+                        </div>
+                    </div>
+
+                    <div class="experience-card card shadow-hover">
+                        <div class="exp-img-wrapper">
+                            <img src="assets/step_farm_walk.png" alt="Walk through Terraced Step-Farms"
+                                class="img-responsive"
+                                onerror="this.src='https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80'">
+                        </div>
+                        <div class="exp-content">
+                            <h3>Terraced Step-Farm Walks</h3>
+                            <p>Stroll through the scenic green potato and carrot step-farms that envelop our property.
+                                The quiet, winding roads of Attuvampatti make for a perfect morning walk in the fresh
+                                mist.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Testimonials Section -->
+        <section class="testimonials-section section-padding" id="testimonials">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-tag">Guest Reviews</span>
+                    <h2>Loved by Families & Couples</h2>
+                    <div class="rating-badge">
+                        <span class="star-rating">★★★★★</span>
+                        <span class="rating-text">4.9 / 5 (12 Google Reviews)</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-3-col">
+
+                    <div class="testimonial-card card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"Had such a peaceful and comfortable stay here. The place is newly built, super clean and feels so homely. The campfire nights, music, and tasty homemade food made the whole experience even more memorable. The hospitality was warm and welcoming which made the stay even better. Perfect place to relax with friends or family. Definitely recommended."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <span>SJ</span>
+                            </div>
+                            <div class="author-info">
+                                <h4>Sidhi Mugai Joe</h4>
+                                <p>Google Review</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"I had such a peaceful and cozy stay at Aarthi Home Stay. The location is surrounded by beautiful greenery and misty hill views, making it perfect for a calm getaway away from the crowded town area. The rooms were clean, comfortable, and felt very homely. The hosts were warm, helpful, and made sure everything was taken care of throughout our stay. Waking up to the cool weather and scenic views was honestly the best part. A great choice for families, couples, or anyone looking for a peaceful Kodaikanal experience. Would definitely love to visit again! 🌿✨"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <span>PN</span>
+                            </div>
+                            <div class="author-info">
+                                <h4>Pravanthikha Nagarajan</h4>
+                                <p>Google Review</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"Stayed here recently and honestly had a great experience. Rooms were clean, service was good, and the atmosphere was very pleasant. Would surely recommend this place to friends and family. Highly recommended loved it"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <span>NM</span>
+                            </div>
+                            <div class="author-info">
+                                <h4>Nive Mandharasalam</h4>
+                                <p>Google Review</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"Top notch experience, good service, staffs were polite, Kamalesh was quick in response and made our check in and stay as smooth as possible. Camp fire was good, Food was awesome, Rooms were clean. Overall 5 Star. Will book again 😊"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <span>G</span>
+                            </div>
+                            <div class="author-info">
+                                <h4>Gandhimathi</h4>
+                                <p>Google Review</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"Best stay in Kodaikanal the property is new and the hospitality was superb. Worth the spot to stay"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <span>AT</span>
+                            </div>
+                            <div class="author-info">
+                                <h4>Aravint Takshan</h4>
+                                <p>Google Review</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card card">
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"One of the best stays you can find on a budget. The staff were really friendly and the owner was an absolute gem of a person. A must try!"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <span>RE</span>
+                            </div>
+                            <div class="author-info">
+                                <h4>Ragulan Elango</h4>
+                                <p>Google Review</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Location Section -->
+        <section class="location-section section-padding bg-light" id="location">
+            <div class="container">
+                <div class="grid grid-2-col align-center">
+
+                    <div class="location-info">
+                        <span class="section-tag">Our Location</span>
+                        <h2>Nestled in Serene Attuvampatti</h2>
+                        <p class="lead">Aarthi Homes is located in Attuvampatti, a quiet hillside enclave just a short
+                            drive from Kodaikanal's main lake.</p>
+                        <p>Enjoying an elevated position, the villa overlooks gorgeous rolling mist-covered ridges and
+                            terraced step-farming plots. Our peaceful location ensures pure mountain air and absolute
+                            quiet, while remaining within close proximity to major scenic points.</p>
+
+                        <div class="travel-times">
+                            <h3>Distance to Attractions:</h3>
+                            <ul>
+                                <li><strong>Chettiar Park:</strong> 12 mins drive</li>
+                                <li><strong>Kodaikanal Lake & Town Center:</strong> 15 mins drive</li>
+                                <li><strong>Pepper Falls:</strong> 15 mins drive</li>
+                                <li><strong>Silver Cascade Falls:</strong> 18 mins drive</li>
+                                <li><strong>Coaker's Walk & Bryant Park:</strong> 20 mins drive</li>
+                            </ul>
+                        </div>
+
+                        <div class="address-box">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            <div class="address-text">
+                                <h4>Aarthi Homes Address</h4>
+                                <p>Attuvampatti, Kodaikanal,<br>Tamil Nadu 624101, India</p>
+                            </div>
+                        </div>
+                        <a href="https://maps.app.goo.gl/q31zWGVPx2Nmiebd9" target="_blank" class="btn btn-outline">
+                            <span>Get Directions on Google Maps</span>
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <line x1="7" y1="17" x2="17" y2="7" />
+                                <polyline points="7 7 17 7 17 17" />
+                            </svg>
+                        </a>
+                    </div>
+
+                    <div class="location-map shadow rounded">
+                        <!-- Embedded Google Maps location representing the exact link coordinates -->
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3924.368817758252!2d77.48003241530965!3d10.271441292665365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b0767004f21cf4b%3A0xe543c7b659c2bb8c!2sAARTHI%20HOMES!5e0!3m2!1sen!2sin!4v1680000000000!5m2!1sen!2sin"
+                            width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade" title="Aarthi Homes Google Map Location">
+                        </iframe>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Booking Inquiry Form Section -->
+        <section class="contact-section section-padding" id="contact">
+            <div class="container">
+                <div class="grid grid-2-col">
+
+                    <div class="contact-details">
+                        <span class="section-tag font-alt">Book Your Stay</span>
+                        <h2>Plan Your Mountain Getaway</h2>
+                        <p class="lead">Submit an inquiry, and our team will get in touch with you shortly to confirm
+                            room availability and finalize your custom booking.</p>
+
+                        <div class="contact-list">
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                                    </svg>
+                                </div>
+                                <div class="contact-info">
+                                    <h4>Phone / WhatsApp</h4>
+                                    <p><a href="tel:+919944881180">+91 99448 81180</a></p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                        <polyline points="22,6 12,13 2,6" />
+                                    </svg>
+                                </div>
+                                <div class="contact-info">
+                                    <h4>Email Address</h4>
+                                    <p><a
+                                            href="mailto:aarthihomeskodaikanal@gmail.com">aarthihomeskodaikanal@gmail.com</a>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <polyline points="12 6 12 12 16 14" />
+                                    </svg>
+                                </div>
+                                <div class="contact-info">
+                                    <h4>Check-In / Out Times</h4>
+                                    <p>Check-In: 12:00 PM | Check-Out: 11:00 AM</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="booking-policy-alert">
+                            <p><strong>Note on bookings:</strong> Aarthi Homes is a popular boutique homestay. We
+                                recommend reserving at least 2-3 weeks in advance, especially for weekend stays and
+                                festival seasons in Kodaikanal.</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-form-wrapper card shadow">
+                        <form class="booking-inquiry-form" id="booking-inquiry-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="booking-name">Full Name *</label>
+                                    <input type="text" id="booking-name" placeholder="John Doe" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="booking-phone">Phone Number *</label>
+                                    <input type="tel" id="booking-phone" placeholder="+91 98765 43210" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="booking-email">Email Address *</label>
+                                <input type="email" id="booking-email" placeholder="john@example.com" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="booking-checkin">Check-In Date *</label>
+                                    <input type="date" id="booking-checkin" required>
+                                    <span class="date-error-msg" id="checkin-error"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="booking-checkout">Check-Out Date *</label>
+                                    <input type="date" id="booking-checkout" required>
+                                    <span class="date-error-msg" id="checkout-error"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="booking-guests">Number of Guests *</label>
+                                    <select id="booking-guests" required>
+                                        <option value="" disabled selected>Select count</option>
+                                        <option value="1">1 Guest</option>
+                                        <option value="2">2 Guests</option>
+                                        <option value="3">3 Guests</option>
+                                        <option value="4">4 Guests</option>
+                                        <option value="5">5 Guests</option>
+                                        <option value="6">6 Guests</option>
+                                        <option value="7">7 Guests</option>
+                                        <option value="8">8+ Guests</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="booking-room-select">Suite Choice *</label>
+                                    <select id="booking-room-select" required>
+                                        <option value="" disabled selected>Select Room type</option>
+                                        <option value="deluxe">Deluxe Balcony Suite</option>
+                                        <option value="valley">Pine Valley Cottage</option>
+                                        <option value="terrace">Terrace View Suite</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="booking-message">Additional Requests or Message</label>
+                                <textarea id="booking-message" rows="4"
+                                    placeholder="Let us know if you require campfire setups, extra beds, dietary preferences, or specific check-in requests..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block btn-lg" id="submit-inquiry">
+                                <span>Submit Reservation Inquiry</span>
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+
+                <div class="footer-brand">
+                    <a href="#home" class="footer-logo">
+                        <img src="assets/logo-vertical-light.png" alt="Aarthi Homes Logo" class="footer-logo-image">
+                    </a>
+                    <p class="footer-desc">A premium luxury boutique homestay located in the serene, scenic hills of
+                        Attuvampatti, Kodaikanal. Experience cozy comfort, modern designs, and warm local hospitality.
+                    </p>
+                    <div class="rating-stars">
+                        <span>★★★★★</span> 4.9 Rating (Google Maps)
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Our Villa</a></li>
+                        <li><a href="#rooms">Our Luxury Suites</a></li>
+                        <li><a href="#gallery">Interactive Gallery</a></li>
+                        <li><a href="#experiences">Hill Station Experiences</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-contact">
+                    <h3>Contact Information</h3>
+                    <p>
+                        <strong>Address:</strong><br>
+                        Attuvampatti, Kodaikanal,<br>
+                        Tamil Nadu 624101, India
+                    </p>
+                    <p>
+                        <strong>Phone:</strong> <a href="tel:+919944881180">+91 99448 81180</a><br>
+                        <strong>Email:</strong> <a
+                            href="mailto:aarthihomeskodaikanal@gmail.com">aarthihomeskodaikanal@gmail.com</a>
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Aarthi Homes Kodaikanal. All rights reserved. Designed with ❤️ for Cozy Hospitality.</p>
+                <div class="footer-bottom-links">
+                    <a href="https://maps.app.goo.gl/q31zWGVPx2Nmiebd9" target="_blank">Google Maps Listing</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Room Detail Modals -->
+    <div class="modal-overlay" id="room-modal">
+        <div class="modal-card">
+            <button class="modal-close" id="modal-close" aria-label="Close Modal">×</button>
+            <div class="modal-content-wrapper" id="modal-content">
+                <!-- Content generated dynamically in JS -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Image Lightbox Modal -->
+    <div class="lightbox-overlay" id="lightbox">
+        <button class="lightbox-close" id="lightbox-close" aria-label="Close Lightbox">×</button>
+        <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Previous Image">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="15 18 9 12 15 6" />
+            </svg>
+        </button>
+        <div class="lightbox-content">
+            <img src="" alt="" id="lightbox-img">
+            <div class="lightbox-caption" id="lightbox-caption"></div>
+        </div>
+        <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Next Image">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="9 18 15 12 9 6" />
+            </svg>
+        </button>
+    </div>
+
+
+    <!-- Success Inquiry Confirmation Modal -->
+    <div class="modal-overlay" id="success-modal">
+        <div class="modal-card success-card text-center">
+            <div class="success-icon-wrapper">
+                <div class="success-icon-ring"></div>
+                <svg viewBox="0 0 24 24" class="success-checkmark" width="48" height="48" fill="none"
+                    stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            <h2>Inquiry Received!</h2>
+            <p class="lead">Thank you, <strong id="success-client-name">Guest</strong>.</p>
+            <p>We have successfully registered your inquiry for <strong id="success-room-type">Deluxe Balcony
+                    Suite</strong> from <span id="success-dates">dates</span>.</p>
+            <p>Our manager will call or message you on <strong id="success-client-phone">+91 XXXXX XXXXX</strong>
+                shortly to finalize details.</p>
+            <button class="btn btn-primary" id="success-close-btn">Done</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+
+</html>

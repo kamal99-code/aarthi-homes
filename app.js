@@ -1,478 +1,592 @@
-/* ==========================================================================
-   AARTHI HOMES Kodaikanal - JS CONTROLLER
-   ========================================================================== */
+// Helix Overdraft Interest Optimizer - Client Application Logic
 
-document.addEventListener('DOMContentLoaded', () => {
+// Local State
+let state = {
+  clientName: '',
+  interestRate: 12.00,
+  endDate: '',
+  transactions: []
+};
 
-    // --- DOM Elements ---
-    const header = document.getElementById('header');
-    const menuToggle = document.getElementById('menu-toggle');
-    const navMenu = document.getElementById('nav-menu');
-    const navLinks = document.querySelectorAll('.nav-link');
+// Default Sample Data (if localStorage is empty)
+const defaultTransactions = [
+  { id: 'tx-1', date: '2026-06-01', type: 'debit', amount: 10000, desc: 'Overdraft Withdrawal' },
+  { id: 'tx-2', date: '2026-06-10', type: 'credit', amount: 4000, desc: 'Repayment Deposit' },
+  { id: 'tx-3', date: '2026-06-20', type: 'debit', amount: 5000, desc: 'ATM Cash Withdrawal' },
+  { id: 'tx-4', date: '2026-06-25', type: 'credit', amount: 8000, desc: 'Salary Repayment' }
+];
+
+// Elements
+const clientNameInput = document.getElementById('client-name');
+const interestRateInput = document.getElementById('interest-rate');
+const endDateInput = document.getElementById('end-date');
+
+const addTxForm = document.getElementById('add-transaction-form');
+const txDateInput = document.getElementById('tx-date');
+const txTypeInput = document.getElementById('tx-type');
+const txAmountInput = document.getElementById('tx-amount');
+const txDescInput = document.getElementById('tx-desc');
+
+const ledgerBody = document.getElementById('ledger-body');
+const ledgerEmpty = document.getElementById('ledger-empty');
+const clearLedgerBtn = document.getElementById('clear-ledger-btn');
+const calculateBtn = document.getElementById('calculate-btn');
+
+const syncStatusBox = document.getElementById('sync-status');
+
+// Helper to format currency
+function formatCurrency(amount) {
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    minimumFractionDigits: 2
+  }).format(amount);
+}
+
+// 30/360 Day Count Calculation
+function getDays30_360(date1Str, date2Str) {
+  const d1 = new Date(date1Str);
+  const d2 = new Date(date2Str);
+
+  const y1 = d1.getFullYear();
+  const m1 = d1.getMonth() + 1; // 1-indexed
+  let day1 = d1.getDate();
+
+  const y2 = d2.getFullYear();
+  const m2 = d2.getMonth() + 1; // 1-indexed
+  let day2 = d2.getDate();
+
+  // Adjustments for 30/360 (US standard 30U/360)
+  if (day1 === 31) {
+    day1 = 30;
+  }
+  if (day2 === 31 && day1 >= 30) {
+    day2 = 30;
+  }
+
+  return (y2 - y1) * 360 + (m2 - m1) * 30 + (day2 - day1);
+}
+
+// Initialize application
+function init() {
+  // Load settings from LocalStorage
+  const savedState = localStorage.getItem('helix_calculator_state');
+  if (savedState) {
+    try {
+      state = JSON.parse(savedState);
+    } catch (e) {
+      console.error('Error loading saved state:', e);
+    }
+  } else {
+    // Set default sample state
+    state.clientName = 'Aarthi Homes Business Account';
+    state.interestRate = 12.50;
+    state.endDate = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // today + 5 days
+    state.transactions = [...defaultTransactions];
+  }
+
+  // Populate config fields
+  clientNameInput.value = state.clientName || '';
+  interestRateInput.value = state.interestRate || '12.00';
+  endDateInput.value = state.endDate || '';
+
+  // Set transaction date input default to today
+  txDateInput.value = new Date().toISOString().split('T')[0];
+
+  // Render transactions and do initial calculation
+  renderLedger();
+  calculateInterest();
+}
+
+// Save state to LocalStorage
+function saveStateToLocalStorage() {
+  state.clientName = clientNameInput.value;
+  state.interestRate = parseFloat(interestRateInput.value) || 12.00;
+  state.endDate = endDateInput.value;
+  localStorage.setItem('helix_calculator_state', JSON.stringify(state));
+}
+
+// Render ledger list
+function renderLedger() {
+  ledgerBody.innerHTML = '';
+  
+  // Sort state transactions by date ascending
+  state.transactions.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  if (state.transactions.length === 0) {
+    ledgerEmpty.classList.remove('hidden');
+  } else {
+    ledgerEmpty.classList.add('hidden');
     
-    // Date fields
-    const quickCheckin = document.getElementById('quick-checkin');
-    const quickCheckout = document.getElementById('quick-checkout');
-    const quickBookingForm = document.getElementById('quick-booking-form');
-    
-    const mainCheckin = document.getElementById('booking-checkin');
-    const mainCheckout = document.getElementById('booking-checkout');
-    const mainGuests = document.getElementById('booking-guests');
-    const mainRoom = document.getElementById('booking-room-select');
-    const bookingForm = document.getElementById('booking-inquiry-form');
-    
-    const checkinError = document.getElementById('checkin-error');
-    const checkoutError = document.getElementById('checkout-error');
+    state.transactions.forEach((tx) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${tx.date}</td>
+        <td>${tx.desc || '—'}</td>
+        <td><span class="badge badge-${tx.type}">${tx.type}</span></td>
+        <td class="text-right ${tx.type === 'debit' ? 'text-accent' : 'text-primary'}">
+          ${tx.type === 'debit' ? '-' : ''}${formatCurrency(tx.amount)}
+        </td>
+        <td class="text-center">
+          <button class="btn-delete" data-id="${tx.id}" title="Remove Transaction">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+          </button>
+        </td>
+      `;
+      
+      // Delete event handler
+      row.querySelector('.btn-delete').addEventListener('click', (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        deleteTransaction(id);
+      });
 
-    // Room Modals
-    const roomModal = document.getElementById('room-modal');
-    const modalClose = document.getElementById('modal-close');
-    const modalContent = document.getElementById('modal-content');
-    const roomDetailsBtns = document.querySelectorAll('.room-details-btn');
-
-    // Lightbox
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-    const lightboxCaption = document.getElementById('lightbox-caption');
-    const lightboxClose = document.getElementById('lightbox-close');
-    const lightboxPrev = document.getElementById('lightbox-prev');
-    const lightboxNext = document.getElementById('lightbox-next');
-    const galleryItems = document.querySelectorAll('.gallery-item');
-
-    // Success Modal
-    const successModal = document.getElementById('success-modal');
-    const successCloseBtn = document.getElementById('success-close-btn');
-    
-    let currentGalleryIndex = 0;
-    const galleryData = [];
-
-    // --- Populate Gallery Data Array ---
-    galleryItems.forEach((item, index) => {
-        const img = item.querySelector('img');
-        const h3 = item.querySelector('h3');
-        galleryData.push({
-            src: item.getAttribute('data-src') || img.src,
-            alt: img.alt,
-            title: h3 ? h3.innerText : 'Aarthi Homes Gallery'
-        });
-        
-        // Add click listener
-        item.addEventListener('click', () => {
-            openLightbox(index);
-        });
+      ledgerBody.appendChild(row);
     });
+  }
+  
+  saveStateToLocalStorage();
+}
 
-    // --- Header Scroll State ---
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
+// Add transaction
+addTxForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const newTx = {
+    id: 'tx-' + Math.random().toString(36).substring(2, 9),
+    date: txDateInput.value,
+    type: txTypeInput.value,
+    amount: parseFloat(txAmountInput.value),
+    desc: txDescInput.value.trim()
+  };
+
+  state.transactions.push(newTx);
+  txAmountInput.value = '';
+  txDescInput.value = '';
+
+  renderLedger();
+  calculateInterest();
+});
+
+// Delete transaction
+function deleteTransaction(id) {
+  state.transactions = state.transactions.filter(tx => tx.id !== id);
+  renderLedger();
+  calculateInterest();
+}
+
+// Clear ledger
+clearLedgerBtn.addEventListener('click', () => {
+  if (confirm('Are you sure you want to clear all transactions in the ledger?')) {
+    state.transactions = [];
+    renderLedger();
+    calculateInterest();
+  }
+});
+
+// Update config properties on input
+clientNameInput.addEventListener('input', saveStateToLocalStorage);
+interestRateInput.addEventListener('input', saveStateToLocalStorage);
+endDateInput.addEventListener('input', saveStateToLocalStorage);
+
+// Core Calculation Engine
+function calculateInterest() {
+  const rate = parseFloat(interestRateInput.value) || 0;
+  
+  if (state.transactions.length === 0) {
+    updateKPIs(0, 0, 0, 0);
+    renderBreakdown([]);
+    renderChart([]);
+    return;
+  }
+
+  // 1. Sort transactions chronologically
+  const sortedTx = [...state.transactions].sort((a, b) => new Date(a.date) - new Date(b.date));
+  
+  // 2. Identify start date and setup running variables
+  const startDateStr = sortedTx[0].date;
+  
+  // Determine final evaluation end date
+  let lastTxDateStr = sortedTx[sortedTx.length - 1].date;
+  let finalEndDateStr = endDateInput.value || lastTxDateStr;
+
+  // Ensure end date is not before the last transaction date
+  if (new Date(finalEndDateStr) < new Date(lastTxDateStr)) {
+    finalEndDateStr = lastTxDateStr;
+    endDateInput.value = finalEndDateStr;
+  }
+
+  // 3. Build chronological balance checkpoints
+  const checkpoints = [];
+  let runningBalance = 0;
+  
+  // Group transactions by date to handle multiple transactions on the same day
+  const txByDate = {};
+  sortedTx.forEach(tx => {
+    if (!txByDate[tx.date]) {
+      txByDate[tx.date] = [];
+    }
+    txByDate[tx.date].push(tx);
+  });
+
+  const uniqueDates = Object.keys(txByDate).sort((a, b) => new Date(a) - new Date(b));
+
+  uniqueDates.forEach((dateStr) => {
+    const dayTxs = txByDate[dateStr];
+    dayTxs.forEach(tx => {
+      if (tx.type === 'debit') {
+        runningBalance -= tx.amount; // Debit decreases account balance (overdraft increases)
+      } else {
+        runningBalance += tx.amount; // Credit increases balance (repay overdraft)
+      }
+    });
+    checkpoints.push({
+      date: dateStr,
+      balance: runningBalance
+    });
+  });
+
+  // 4. Calculate intervals & accrued interest
+  const intervals = [];
+  let peakOverdraft = 0;
+  let totalOverdraftDays = 0;
+  let totalAccruedInterest = 0;
+
+  for (let i = 0; i < checkpoints.length; i++) {
+    const startCheckpoint = checkpoints[i];
+    const currentBalance = startCheckpoint.balance;
+
+    // Define next checkpoint date (or the evaluation end date)
+    let endPeriodDateStr = (i === checkpoints.length - 1) ? finalEndDateStr : checkpoints[i+1].date;
+    
+    // Calculate days in this interval under 30/360 convention
+    const intervalDays = getDays30_360(startCheckpoint.date, endPeriodDateStr);
+    
+    let intervalInterest = 0;
+    
+    if (intervalDays > 0) {
+      if (currentBalance < 0) {
+        // Negative balance represents overdraft. We calculate interest on the absolute debit amount.
+        const overdraftAmount = Math.abs(currentBalance);
+        intervalInterest = overdraftAmount * (rate / 100) * (intervalDays / 360);
+        
+        totalOverdraftDays += intervalDays;
+        if (overdraftAmount > peakOverdraft) {
+          peakOverdraft = overdraftAmount;
         }
-        
-        // Active Link Highlighting
-        let currentSectionId = '';
-        const sections = document.querySelectorAll('section, header');
-        const scrollPosition = window.scrollY + 120;
-        
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.offsetHeight;
-            if (scrollPosition >= sectionTop && scrollPosition < (sectionTop + sectionHeight)) {
-                currentSectionId = section.getAttribute('id');
-            }
-        });
-        
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${currentSectionId}`) {
-                link.classList.add('active');
-            }
-        });
-    });
+      }
+      
+      totalAccruedInterest += intervalInterest;
 
-    // --- Mobile Menu Toggle ---
-    menuToggle.addEventListener('click', () => {
-        menuToggle.classList.toggle('open');
-        navMenu.classList.toggle('open');
-    });
+      intervals.push({
+        startDate: startCheckpoint.date,
+        endDate: endPeriodDateStr,
+        days: intervalDays,
+        balance: currentBalance,
+        interest: intervalInterest
+      });
+    }
+  }
 
-    // Close mobile nav when clicking a link
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            menuToggle.classList.remove('open');
-            navMenu.classList.remove('open');
-        });
-    });
+  // 5. Update dashboard
+  updateKPIs(totalAccruedInterest, runningBalance, peakOverdraft, totalOverdraftDays);
+  renderBreakdown(intervals);
+  renderChart(checkpoints, finalEndDateStr);
+}
 
-    // --- Room Modals Data ---
-    const roomDetailsData = {
-        deluxe: {
-            title: 'Deluxe Balcony Suite',
-            type: 'Premium Accommodation',
-            img: 'assets/bedroom.jpg',
-            fallbackImg: 'https://images.unsplash.com/photo-1611891487122-2075b96244e1?auto=format&fit=crop&w=600&q=80',
-            desc: 'Our Deluxe Balcony Suite highlights high-end interior craftsmanship. Adorned with warm light-oak wood panels, a gorgeous custom-designed pink leaf-pattern mural, and ambient hidden ceiling LED lights, this suite provides absolute comfort. It includes a writing desk, built-in wardrobes, a dedicated electric kettle, a space heater, and custom embroidered white linens featuring the Aarthi Homes logo. Sliding glass doors lead you directly onto your private balcony overlooking Kodaikanal\'s terraced hills.',
-            specs: {
-                size: '400 sq. ft.',
-                occupancy: '2 Adults (Extra bed available)',
-                bed: 'King Size Double Bed',
-                view: 'Scenic Valleys & Step Farms'
-            },
-            price: '₹4,500'
-        },
-        valley: {
-            title: 'Pine Valley Cottage',
-            type: 'Hillside Cottage Suite',
-            img: 'assets/balcony.jpg',
-            fallbackImg: 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=600&q=80',
-            desc: 'The Pine Valley Cottage focuses on integrating the gorgeous outdoor environment of Attuvampatti with modern indoor comfort. Complete with comfy indoor armchairs and local wood tables, this suite has high ceilings and large windows that invite the morning mist inside. Step onto the balcony and settle into the minimalist outdoor seating with a hot cup of coffee to gaze at the winding paths and step-farming structures below. It connects directly with the clay jaali brick walk.',
-            specs: {
-                size: '450 sq. ft.',
-                occupancy: '2-3 Adults',
-                bed: 'Super King Size Double Bed',
-                view: 'Mountain Valleys & Pine Forest'
-            },
-            price: '₹5,200'
-        },
-        terrace: {
-            title: 'Terrace View Suite',
-            type: 'Garden Level Suite',
-            img: 'assets/08.jpg',
-            fallbackImg: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80',
-            desc: 'The Terrace View Suite offers a unique blend of heritage architecture and contemporary utility. Located on the ground level, right next to the gorgeous brick-red jaali screens, it boasts an outdoor pathway view. The interior features rich oak framing, a large built-in dressing mirror, a separate leather seating chair, a functional study/makeup desk, custom logo towels, and a dedicated space heater for cool nights. Ideal for travelers wanting easy outdoor garden access.',
-            specs: {
-                size: '350 sq. ft.',
-                occupancy: '2 Adults',
-                bed: 'Standard Double Bed',
-                view: 'Terracotta Corridor & Garden'
-            },
-            price: '₹4,000'
-        }
+// Update KPI UI cards
+function updateKPIs(interest, balance, peak, days) {
+  document.getElementById('kpi-interest').querySelector('.kpi-value').textContent = formatCurrency(interest);
+  
+  const balanceEl = document.getElementById('kpi-balance').querySelector('.kpi-value');
+  balanceEl.textContent = formatCurrency(balance);
+  if (balance < 0) {
+    balanceEl.className = 'kpi-value text-accent'; // Neon Teal for debit outstanding
+  } else {
+    balanceEl.className = 'kpi-value text-primary';
+  }
+  
+  document.getElementById('kpi-peak').querySelector('.kpi-value').textContent = formatCurrency(peak);
+  document.getElementById('kpi-days').querySelector('.kpi-value').textContent = `${days} day${days !== 1 ? 's' : ''}`;
+  
+  // Cache final numbers in state for API submission
+  state.totalCalculatedInterest = parseFloat(interest.toFixed(2));
+  state.finalNetBalance = parseFloat(balance.toFixed(2));
+}
+
+// Render Step-by-Step Ledger
+function renderBreakdown(intervals) {
+  const breakdownBody = document.getElementById('breakdown-body');
+  breakdownBody.innerHTML = '';
+
+  if (intervals.length === 0) {
+    breakdownBody.innerHTML = `
+      <tr>
+        <td colspan="4" class="text-center py-6 text-muted">No intervals calculated. Ensure you have transactions and valid dates.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  intervals.forEach(interval => {
+    const row = document.createElement('tr');
+    
+    const isOverdrawn = interval.balance < 0;
+    const balanceText = formatCurrency(interval.balance);
+    const interestText = interval.interest > 0 ? `+${formatCurrency(interval.interest)}` : '₹0.00';
+
+    row.innerHTML = `
+      <td>${interval.startDate} &rarr; ${interval.endDate}</td>
+      <td class="text-center">${interval.days} days</td>
+      <td class="text-right ${isOverdrawn ? 'text-accent' : 'text-primary'}">${balanceText}</td>
+      <td class="text-right ${interval.interest > 0 ? 'text-accent' : 'text-muted'}">${interestText}</td>
+    `;
+    breakdownBody.appendChild(row);
+  });
+}
+
+// Render Balance SVG Chart
+function renderChart(checkpoints, finalEndDateStr) {
+  const svg = document.getElementById('balance-svg');
+  const pathLine = document.getElementById('chart-line-path');
+  const pathArea = document.getElementById('chart-area-path');
+  const labelsContainer = document.getElementById('chart-dates-labels');
+  
+  // Clear previous axis dynamic lines
+  const existingDots = svg.querySelectorAll('.chart-dot, .chart-gridline');
+  existingDots.forEach(el => el.remove());
+  labelsContainer.innerHTML = '';
+
+  if (checkpoints.length === 0) {
+    pathLine.setAttribute('d', '');
+    pathArea.setAttribute('d', '');
+    return;
+  }
+
+  // Include starting coordinate at time of first transaction
+  const chartPoints = [];
+  const startMs = new Date(checkpoints[0].date).getTime();
+  const endMs = new Date(finalEndDateStr).getTime();
+  const totalMs = endMs - startMs || 1; // avoid divide by zero
+
+  // Find min and max balance for Y scaling
+  let minBalance = 0;
+  let maxBalance = 0;
+  checkpoints.forEach(cp => {
+    if (cp.balance < minBalance) minBalance = cp.balance;
+    if (cp.balance > maxBalance) maxBalance = cp.balance;
+  });
+
+  // Give some padding in Y axis
+  const maxAbs = Math.max(Math.abs(minBalance), Math.abs(maxBalance), 5000);
+  const yRange = maxAbs * 1.25;
+
+  const width = 600;
+  const height = 240;
+  const zeroY = height / 2; // Midpoint is zero balance
+
+  // Position Zero Axis Dash Line
+  const zeroAxis = document.getElementById('zero-axis');
+  zeroAxis.setAttribute('y1', zeroY);
+  zeroAxis.setAttribute('y2', zeroY);
+
+  // Map function to translate (time, balance) -> (x, y)
+  function getCoords(dateStr, balance) {
+    const timeMs = new Date(dateStr).getTime();
+    const x = ((timeMs - startMs) / totalMs) * width;
+    
+    // Y-axis translation: positive balance goes UP (lower Y value), negative goes DOWN (higher Y value)
+    const y = zeroY - (balance / yRange) * (height / 2);
+    return { x, y };
+  }
+
+  // Build list of coords including step-like transitions (balance changes instantly on tx dates)
+  let prevDate = checkpoints[0].date;
+  let prevBalance = 0;
+
+  checkpoints.forEach((cp, index) => {
+    if (index > 0) {
+      // Step point: continue previous balance up to the new date
+      chartPoints.push(getCoords(cp.date, prevBalance));
+    } else {
+      // Very first entry: start at zero balance right before transaction
+      chartPoints.push(getCoords(cp.date, 0));
+    }
+    
+    // Actual coordinate on date
+    chartPoints.push(getCoords(cp.date, cp.balance));
+    prevBalance = cp.balance;
+  });
+
+  // Connect to the final evaluation end date
+  if (finalEndDateStr !== checkpoints[checkpoints.length - 1].date) {
+    chartPoints.push(getCoords(finalEndDateStr, prevBalance));
+  }
+
+  // Build SVG Path String
+  let pathD = '';
+  chartPoints.forEach((pt, i) => {
+    if (i === 0) {
+      pathD += `M ${pt.x} ${pt.y}`;
+    } else {
+      pathD += ` L ${pt.x} ${pt.y}`;
+    }
+  });
+
+  pathLine.setAttribute('d', pathD);
+
+  // Area Path (closes path along the zero line)
+  if (chartPoints.length > 0) {
+    const firstPt = chartPoints[0];
+    const lastPt = chartPoints[chartPoints.length - 1];
+    const areaD = `${pathD} L ${lastPt.x} ${zeroY} L ${firstPt.x} ${zeroY} Z`;
+    pathArea.setAttribute('d', areaD);
+  }
+
+  // Draw data point circles and vertical gridlines
+  checkpoints.forEach(cp => {
+    const coords = getCoords(cp.date, cp.balance);
+    
+    // Vertical line
+    const gridline = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    gridline.setAttribute('x1', coords.x);
+    gridline.setAttribute('y1', 0);
+    gridline.setAttribute('x2', coords.x);
+    gridline.setAttribute('y2', height);
+    gridline.setAttribute('class', 'chart-gridline');
+    gridline.setAttribute('stroke', 'rgba(255,255,255,0.03)');
+    svg.appendChild(gridline);
+
+    // Dynamic dot
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('cx', coords.x);
+    circle.setAttribute('cy', coords.y);
+    circle.setAttribute('r', 4.5);
+    circle.setAttribute('class', 'chart-dot');
+    circle.setAttribute('fill', cp.balance < 0 ? 'var(--accent-neon)' : 'var(--accent-blue)');
+    circle.setAttribute('stroke', 'var(--bg-dark)');
+    circle.setAttribute('stroke-width', '1.5');
+    
+    // Tooltip simulation
+    const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+    title.textContent = `${cp.date}: Balance ${formatCurrency(cp.balance)}`;
+    circle.appendChild(title);
+    
+    svg.appendChild(circle);
+  });
+
+  // Date labels at footer of chart
+  if (checkpoints.length > 0) {
+    const firstDate = checkpoints[0].date;
+    const lastDate = finalEndDateStr;
+    
+    const d1El = document.createElement('span');
+    d1El.textContent = firstDate;
+    labelsContainer.appendChild(d1El);
+
+    if (checkpoints.length > 2) {
+      const midIdx = Math.floor(checkpoints.length / 2);
+      const midDate = checkpoints[midIdx].date;
+      const dMidEl = document.createElement('span');
+      dMidEl.textContent = midDate;
+      labelsContainer.appendChild(dMidEl);
+    }
+
+    const d2El = document.createElement('span');
+    d2El.textContent = lastDate;
+    labelsContainer.appendChild(d2El);
+  }
+}
+
+// Send calculations to server (Supabase & Google Sheets sync)
+async function syncDataToServer() {
+  if (state.transactions.length === 0) {
+    alert('Add some transactions to the ledger before syncing.');
+    return;
+  }
+
+  const clientName = clientNameInput.value.trim();
+  if (!clientName) {
+    alert('Please enter an Account Name to identify this save.');
+    clientNameInput.focus();
+    return;
+  }
+
+  // Toggle button loading state
+  const btnText = calculateBtn.querySelector('.btn-text');
+  const spinner = calculateBtn.querySelector('.spinner');
+  
+  calculateBtn.disabled = true;
+  btnText.textContent = 'Syncing...';
+  spinner.classList.remove('hidden');
+
+  showSyncStatus('Syncing calculation logs to Supabase and Google Sheet...', false);
+
+  try {
+    const payload = {
+      name: clientName,
+      interestRate: state.interestRate,
+      transactions: state.transactions,
+      totalInterest: state.totalCalculatedInterest
     };
 
-    // Open Room Detail Modal
-    roomDetailsBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const roomType = btn.getAttribute('data-room');
-            const data = roomDetailsData[roomType];
-            if (data) {
-                populateRoomModal(data);
-                roomModal.classList.add('open');
-                document.body.style.overflow = 'hidden';
-            }
-        });
+    const response = await fetch('/api/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
     });
 
-    function populateRoomModal(data) {
-        modalContent.innerHTML = `
-            <div class="modal-img-section">
-                <img src="${data.img}" alt="${data.title}" class="img-responsive" onerror="this.src='${data.fallbackImg}'">
-            </div>
-            <div class="modal-info-section">
-                <span class="modal-room-type">${data.type}</span>
-                <h2>${data.title}</h2>
-                <p class="modal-desc">${data.desc}</p>
-                <div class="modal-specs">
-                    <div class="spec-item"><strong>Room Area</strong>${data.specs.size}</div>
-                    <div class="spec-item"><strong>Max Occupancy</strong>${data.specs.occupancy}</div>
-                    <div class="spec-item"><strong>Bed Options</strong>${data.specs.bed}</div>
-                    <div class="spec-item"><strong>Scenic View</strong>${data.specs.view}</div>
-                </div>
-                <div class="modal-cta-box">
-                    <a href="#contact" class="btn btn-primary" id="modal-book-now-btn">Book Room</a>
-                </div>
-            </div>
-        `;
+    const result = await response.json();
 
-        // Add booking link close listener
-        document.getElementById('modal-book-now-btn').addEventListener('click', () => {
-            closeRoomModal();
-            // Select room type in main form
-            if (mainRoom) {
-                const mapOptions = { 'Deluxe Balcony Suite': 'deluxe', 'Pine Valley Cottage': 'valley', 'Terrace View Suite': 'terrace' };
-                // Find matching option key
-                for (let key in mapOptions) {
-                    if (data.title === key) {
-                        mainRoom.value = mapOptions[key];
-                    }
-                }
-            }
-        });
+    if (result.success) {
+      // Highlight exact sync report
+      let statusText = `Saved Successfully! ${result.message}`;
+      showSyncStatus(statusText, false);
+      
+      // Clear status bar after 8 seconds
+      setTimeout(() => {
+        syncStatusBox.classList.add('hidden');
+      }, 8000);
+    } else {
+      showSyncStatus(`Warning: ${result.message || 'Sync failed.'}`, true);
     }
+  } catch (err) {
+    console.error('Network sync error:', err);
+    showSyncStatus(`Sync failed: Network error. Server could not be reached. Calculations cached locally.`, true);
+  } finally {
+    // Restore button state
+    calculateBtn.disabled = false;
+    btnText.textContent = 'Compute Interest & Sync Database';
+    spinner.classList.add('hidden');
+  }
+}
 
-    function closeRoomModal() {
-        roomModal.classList.remove('open');
-        document.body.style.overflow = '';
-    }
+// Display Toast/Status banner
+function showSyncStatus(message, isError) {
+  syncStatusBox.classList.remove('hidden');
+  const messageEl = syncStatusBox.querySelector('.sync-message');
+  messageEl.textContent = message;
 
-    modalClose.addEventListener('click', closeRoomModal);
-    roomModal.addEventListener('click', (e) => {
-        if (e.target === roomModal) closeRoomModal();
-    });
+  if (isError) {
+    syncStatusBox.className = 'sync-banner error-sync';
+  } else {
+    syncStatusBox.className = 'sync-banner';
+  }
+}
 
-
-    // --- Date Validation & Quick Bar Sync ---
-    
-    // Set minimum check-in date to today
-    const today = new Date().toISOString().split('T')[0];
-    if (quickCheckin && mainCheckin) {
-        quickCheckin.min = today;
-        mainCheckin.min = today;
-    }
-
-    // Set check-out minimum based on check-in date
-    function updateCheckoutMin(checkinElem, checkoutElem) {
-        if (checkinElem.value) {
-            const checkinDate = new Date(checkinElem.value);
-            checkinDate.setDate(checkinDate.getDate() + 1); // Minimum 1 night stay
-            const nextDayStr = checkinDate.toISOString().split('T')[0];
-            checkoutElem.min = nextDayStr;
-            
-            // If check-out is currently equal or before new minimum, adjust it
-            if (checkoutElem.value && checkoutElem.value < nextDayStr) {
-                checkoutElem.value = nextDayStr;
-            }
-        }
-    }
-
-    if (quickCheckin && quickCheckout) {
-        quickCheckin.addEventListener('change', () => updateCheckoutMin(quickCheckin, quickCheckout));
-    }
-    if (mainCheckin && mainCheckout) {
-        mainCheckin.addEventListener('change', () => updateCheckoutMin(mainCheckin, mainCheckout));
-    }
-
-    // Quick booking form submission (redirects and syncs with main form)
-    if (quickBookingForm) {
-        quickBookingForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Sync values to main form
-            if (mainCheckin) mainCheckin.value = quickCheckin.value;
-            if (mainCheckout) {
-                updateCheckoutMin(mainCheckin, mainCheckout);
-                mainCheckout.value = quickCheckout.value;
-            }
-            if (mainGuests) {
-                const guestsVal = document.getElementById('quick-guests').value;
-                mainGuests.value = guestsVal;
-            }
-            if (mainRoom) {
-                const roomVal = document.getElementById('quick-room').value;
-                mainRoom.value = roomVal;
-            }
-
-            // Scroll smoothly to contact section
-            const contactSection = document.getElementById('contact');
-            if (contactSection) {
-                contactSection.scrollIntoView({ behavior: 'smooth' });
-                // Briefly flash background of the form to highlight
-                const formWrapper = document.querySelector('.contact-form-wrapper');
-                formWrapper.style.transform = 'scale(1.02)';
-                formWrapper.style.borderColor = 'var(--primary-wood)';
-                setTimeout(() => {
-                    formWrapper.style.transform = 'scale(1)';
-                    formWrapper.style.borderColor = 'var(--border-color)';
-                }, 800);
-            }
-        });
-    }
-
-
-    // --- Lightbox Functionality ---
-    function openLightbox(index) {
-        currentGalleryIndex = index;
-        updateLightboxImage();
-        lightbox.classList.add('open');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function updateLightboxImage() {
-        const item = galleryData[currentGalleryIndex];
-        if (item) {
-            lightboxImg.src = item.src;
-            lightboxImg.alt = item.alt;
-            lightboxCaption.innerText = item.title;
-        }
-    }
-
-    function closeLightbox() {
-        lightbox.classList.remove('open');
-        document.body.style.overflow = '';
-    }
-
-    function prevLightbox() {
-        currentGalleryIndex = (currentGalleryIndex - 1 + galleryData.length) % galleryData.length;
-        updateLightboxImage();
-    }
-
-    function nextLightbox() {
-        currentGalleryIndex = (currentGalleryIndex + 1) % galleryData.length;
-        updateLightboxImage();
-    }
-
-    lightboxClose.addEventListener('click', closeLightbox);
-    lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); prevLightbox(); });
-    lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); nextLightbox(); });
-    
-    lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox || e.target === lightboxImg || e.target.closest('.lightbox-content')) {
-            // Click outside buttons closes
-            if (e.target !== lightboxPrev && e.target !== lightboxNext) {
-                closeLightbox();
-            }
-        }
-    });
-
-    // Keyboard support for Lightbox and Modals
-    document.addEventListener('keydown', (e) => {
-        if (lightbox.classList.contains('open')) {
-            if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowLeft') prevLightbox();
-            if (e.key === 'ArrowRight') nextLightbox();
-        }
-        if (roomModal.classList.contains('open')) {
-            if (e.key === 'Escape') closeRoomModal();
-        }
-        if (successModal.classList.contains('open')) {
-            if (e.key === 'Escape') closeSuccessModal();
-        }
-    });
-
-
-    // --- Form validation and Mock Submission ---
-    
-    if (bookingForm) {
-        bookingForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Clear prior validation errors
-            let isValid = true;
-            document.querySelectorAll('.form-group').forEach(grp => grp.classList.remove('has-error'));
-            
-            const checkinVal = mainCheckin.value;
-            const checkoutVal = mainCheckout.value;
-            
-            // Verify Dates logic
-            if (!checkinVal) {
-                isValid = false;
-                mainCheckin.parentElement.classList.add('has-error');
-                checkinError.innerText = 'Check-in date is required';
-            }
-            
-            if (!checkoutVal) {
-                isValid = false;
-                mainCheckout.parentElement.classList.add('has-error');
-                checkoutError.innerText = 'Check-out date is required';
-            }
-            
-            if (checkinVal && checkoutVal) {
-                const inDate = new Date(checkinVal);
-                const outDate = new Date(checkoutVal);
-                
-                if (outDate <= inDate) {
-                    isValid = false;
-                    mainCheckout.parentElement.classList.add('has-error');
-                    checkoutError.innerText = 'Check-out must be after check-in';
-                }
-            }
-
-            if (!isValid) return;
-
-            // Gather inputs for success modal display and api dispatch
-            const nameVal = document.getElementById('booking-name').value;
-            const phoneVal = document.getElementById('booking-phone').value;
-            const emailVal = document.getElementById('booking-email').value;
-            const roomSelect = document.getElementById('booking-room-select');
-            const roomText = roomSelect.options[roomSelect.selectedIndex].text;
-            const guestsVal = document.getElementById('booking-guests').value || 1;
-            const messageVal = document.getElementById('booking-message').value || "";
-            
-            const formatter = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-            const checkinFormatted = formatter.format(new Date(checkinVal));
-            const checkoutFormatted = formatter.format(new Date(checkoutVal));
-
-            // Compile request payload
-            const inquiryData = {
-                name: nameVal,
-                phone: phoneVal,
-                email: emailVal,
-                room: roomText,
-                checkin: checkinVal,
-                checkout: checkoutVal,
-                guests: parseInt(guestsVal, 10),
-                comments: messageVal
-            };
-
-            // Submission state (disable button, show spinner/loading)
-            const submitBtn = document.getElementById('submit-inquiry');
-            const originalBtnText = submitBtn.innerHTML;
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span>Processing your request...</span>';
-
-            // Promises for API dispatch
-            const apiDispatches = [];
-
-            // 1. Dispatch to local server database backup
-            apiDispatches.push(
-                fetch('/api/inquiry', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(inquiryData)
-                }).then(res => {
-                    if (!res.ok) console.warn('Local backup server responded with error status:', res.status);
-                }).catch(err => console.warn('Local database logging failed:', err))
-            );
-
-            // 2. Dispatch to Google Sheets if Web App URL is configured
-            const googleSheetUrl = localStorage.getItem('google_sheet_url');
-            if (googleSheetUrl) {
-                apiDispatches.push(
-                    fetch(googleSheetUrl, {
-                        method: 'POST',
-                        mode: 'no-cors', // Bypasses CORS requirements for simple webhook dispatches
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(inquiryData)
-                    }).then(() => {
-                        console.log('Inquiry successfully synced with Google Sheets.');
-                    }).catch(err => console.warn('Google Sheet synchronization failed:', err))
-                );
-            }
-
-            // Execute dispatches and wait (with minimum visual display time for premium feel)
-            const minWaitPromise = new Promise(resolve => setTimeout(resolve, 1200));
-            
-            Promise.all([...apiDispatches, minWaitPromise]).then(() => {
-                // Success modal actions
-                document.getElementById('success-client-name').innerText = nameVal;
-                document.getElementById('success-room-type').innerText = roomText;
-                document.getElementById('success-dates').innerText = `${checkinFormatted} to ${checkoutFormatted}`;
-                document.getElementById('success-client-phone').innerText = phoneVal;
-
-                // Open Success modal
-                successModal.classList.add('open');
-                document.body.style.overflow = 'hidden';
-
-                // Reset forms
-                bookingForm.reset();
-                if (quickBookingForm) quickBookingForm.reset();
-                
-                // Re-enable submit button
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnText;
-            });
-        });
-    }
-
-    function closeSuccessModal() {
-        successModal.classList.remove('open');
-        document.body.style.overflow = '';
-    }
-
-    successCloseBtn.addEventListener('click', closeSuccessModal);
-    successModal.addEventListener('click', (e) => {
-        if (e.target === successModal) closeSuccessModal();
-    });
-
+// Calculate Button Trigger
+calculateBtn.addEventListener('click', () => {
+  calculateInterest();
+  syncDataToServer();
 });
+
+// Watch settings form to trigger immediate visual recalculations
+interestRateInput.addEventListener('input', calculateInterest);
+endDateInput.addEventListener('input', calculateInterest);
+
+// Start
+init();
