@@ -8,3 +8,5 @@ Thumbs.db
 aarthi-homes/assets/Video.mp4
 .vercel
 calculations.json
+
+.env*

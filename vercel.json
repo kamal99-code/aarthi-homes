@@ -1,9 +1,10 @@
 {
   "cleanUrls": true,
+  "outputDirectory": ".",
   "crons": [
     {
       "path": "/api/cleanup",
-      "schedule": "0 * * * *"
+      "schedule": "0 0 * * *"
     }
   ]
 }
