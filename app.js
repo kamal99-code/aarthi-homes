@@ -68,6 +68,16 @@ function init() {
   if (savedState) {
     try {
       state = JSON.parse(savedState);
+      
+      // Force reset if legacy 'Aarthi Homes' test account is cached
+      if (state.clientName === 'Aarthi Homes Business Account') {
+        state.clientName = '';
+        state.transactions = [];
+        state.endDate = '';
+        state.interestRate = 12.00;
+        state.endDatePlusOne = false;
+        localStorage.setItem('helix_calculator_state', JSON.stringify(state));
+      }
     } catch (e) {
       console.error('Error loading saved state:', e);
     }
