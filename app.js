@@ -8,13 +8,6 @@ let state = {
   transactions: []
 };
 
-// Default Sample Data (if localStorage is empty)
-const defaultTransactions = [
-  { id: 'tx-1', date: '2026-06-01', type: 'debit', amount: 10000, desc: 'Overdraft Withdrawal' },
-  { id: 'tx-2', date: '2026-06-10', type: 'credit', amount: 4000, desc: 'Repayment Deposit' },
-  { id: 'tx-3', date: '2026-06-20', type: 'debit', amount: 5000, desc: 'ATM Cash Withdrawal' },
-  { id: 'tx-4', date: '2026-06-25', type: 'credit', amount: 8000, desc: 'Salary Repayment' }
-];
 
 // Elements
 const clientNameInput = document.getElementById('client-name');
@@ -79,11 +72,11 @@ function init() {
       console.error('Error loading saved state:', e);
     }
   } else {
-    // Set default sample state
-    state.clientName = 'Aarthi Homes Business Account';
-    state.interestRate = 12.50;
-    state.endDate = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // today + 5 days
-    state.transactions = [...defaultTransactions];
+    // Set default empty state
+    state.clientName = '';
+    state.interestRate = 12.00;
+    state.endDate = '';
+    state.transactions = [];
   }
 
   // Populate config fields
