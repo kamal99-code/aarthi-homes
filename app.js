@@ -20,6 +20,7 @@ const defaultTransactions = [
 const clientNameInput = document.getElementById('client-name');
 const interestRateInput = document.getElementById('interest-rate');
 const endDateInput = document.getElementById('end-date');
+const endDatePlusOneCheckbox = document.getElementById('end-date-plus-one');
 
 const addTxForm = document.getElementById('add-transaction-form');
 const txDateInput = document.getElementById('tx-date');
@@ -89,6 +90,7 @@ function init() {
   clientNameInput.value = state.clientName || '';
   interestRateInput.value = state.interestRate || '12.00';
   endDateInput.value = state.endDate || '';
+  endDatePlusOneCheckbox.checked = state.endDatePlusOne || false;
 
   // Set transaction date input default to today
   txDateInput.value = new Date().toISOString().split('T')[0];
@@ -103,6 +105,7 @@ function saveStateToLocalStorage() {
   state.clientName = clientNameInput.value;
   state.interestRate = parseFloat(interestRateInput.value) || 12.00;
   state.endDate = endDateInput.value;
+  state.endDatePlusOne = endDatePlusOneCheckbox.checked;
   localStorage.setItem('helix_calculator_state', JSON.stringify(state));
 }
 
@@ -194,11 +197,33 @@ endDateInput.addEventListener('input', saveStateToLocalStorage);
 // Core Calculation Engine
 function calculateInterest() {
   const rate = parseFloat(interestRateInput.value) || 0;
+  const endDateVal = endDateInput.value;
   
   if (state.transactions.length === 0) {
     updateKPIs(0, 0, 0, 0);
     renderBreakdown([]);
     renderChart([]);
+    return;
+  }
+
+  if (!endDateVal) {
+    document.getElementById('kpi-interest').querySelector('.kpi-value').textContent = "Select Date";
+    document.getElementById('kpi-balance').querySelector('.kpi-value').textContent = "—";
+    document.getElementById('kpi-peak').querySelector('.kpi-value').textContent = "—";
+    document.getElementById('kpi-days').querySelector('.kpi-value').textContent = "—";
+    
+    const breakdownBody = document.getElementById('breakdown-body');
+    breakdownBody.innerHTML = `
+      <tr>
+        <td colspan="4" class="text-center py-6 text-warning">Please enter a valid Evaluation End Date to calculate interest.</td>
+      </tr>
+    `;
+    
+    // Clear chart
+    const pathLine = document.getElementById('chart-line-path');
+    const pathArea = document.getElementById('chart-area-path');
+    if (pathLine) pathLine.setAttribute('d', '');
+    if (pathArea) pathArea.setAttribute('d', '');
     return;
   }
 
@@ -210,12 +235,20 @@ function calculateInterest() {
   
   // Determine final evaluation end date
   let lastTxDateStr = sortedTx[sortedTx.length - 1].date;
-  let finalEndDateStr = endDateInput.value || lastTxDateStr;
+  let finalEndDateStr = endDateVal;
 
   // Ensure end date is not before the last transaction date
   if (new Date(finalEndDateStr) < new Date(lastTxDateStr)) {
     finalEndDateStr = lastTxDateStr;
     endDateInput.value = finalEndDateStr;
+  }
+
+  // Adjust calculations final date +1 day if checked
+  let calculationEndDateStr = finalEndDateStr;
+  if (endDatePlusOneCheckbox.checked) {
+    const nextDay = new Date(finalEndDateStr);
+    nextDay.setDate(nextDay.getDate() + 1);
+    calculationEndDateStr = nextDay.toISOString().split('T')[0];
   }
 
   // 3. Build chronological balance checkpoints
@@ -259,7 +292,7 @@ function calculateInterest() {
     const currentBalance = startCheckpoint.balance;
 
     // Define next checkpoint date (or the evaluation end date)
-    let endPeriodDateStr = (i === checkpoints.length - 1) ? finalEndDateStr : checkpoints[i+1].date;
+    let endPeriodDateStr = (i === checkpoints.length - 1) ? calculationEndDateStr : checkpoints[i+1].date;
     
     // Calculate days in this interval under 30/360 convention
     const intervalDays = getDays30_360(startCheckpoint.date, endPeriodDateStr);
@@ -293,7 +326,7 @@ function calculateInterest() {
   // 5. Update dashboard
   updateKPIs(totalAccruedInterest, runningBalance, peakOverdraft, totalOverdraftDays);
   renderBreakdown(intervals);
-  renderChart(checkpoints, finalEndDateStr);
+  renderChart(checkpoints, calculationEndDateStr);
 }
 
 // Update KPI UI cards
@@ -514,6 +547,13 @@ async function syncDataToServer() {
     return;
   }
 
+  const endDateVal = endDateInput.value;
+  if (!endDateVal) {
+    alert('Please enter a valid Evaluation End Date before syncing.');
+    endDateInput.focus();
+    return;
+  }
+
   // Toggle button loading state
   const btnText = calculateBtn.querySelector('.btn-text');
   const spinner = calculateBtn.querySelector('.spinner');
@@ -585,8 +625,9 @@ calculateBtn.addEventListener('click', () => {
 });
 
 // Watch settings form to trigger immediate visual recalculations
-interestRateInput.addEventListener('input', calculateInterest);
-endDateInput.addEventListener('input', calculateInterest);
+interestRateInput.addEventListener('input', () => { saveStateToLocalStorage(); calculateInterest(); });
+endDateInput.addEventListener('input', () => { saveStateToLocalStorage(); calculateInterest(); });
+endDatePlusOneCheckbox.addEventListener('change', () => { saveStateToLocalStorage(); calculateInterest(); });
 
 // Start
 init();

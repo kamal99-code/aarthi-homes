@@ -182,10 +182,108 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  if (pathname.startsWith('/api/history')) {
+    try {
+      const handlerModule = await import('./api/history.js');
+      const handler = handlerModule.default;
+
+      // Mock Vercel req and res
+      const mockReq = {
+        method,
+        body: {},
+        headers: req.headers,
+        url: req.url,
+      };
+
+      const mockRes = {
+        statusCode: 200,
+        headers: {},
+        setHeader(name, value) {
+          this.headers[name] = value;
+          res.setHeader(name, value);
+          return this;
+        },
+        status(code) {
+          this.statusCode = code;
+          res.statusCode = code;
+          return this;
+        },
+        json(data) {
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(data));
+          return this;
+        },
+        end(data = '') {
+          res.end(data);
+          return this;
+        }
+      };
+
+      await handler(mockReq, mockRes);
+    } catch (error) {
+      console.error('API /api/history error:', error);
+      res.statusCode = 500;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ success: false, message: 'Internal server error running history API locally.', error: error.message }));
+    }
+    return;
+  }
+
+  if (pathname.startsWith('/api/delete-calculation')) {
+    try {
+      const handlerModule = await import('./api/delete-calculation.js');
+      const handler = handlerModule.default;
+      
+      const body = method === 'POST' ? await parseJsonBody(req) : {};
+
+      // Mock Vercel req and res
+      const mockReq = {
+        method,
+        body,
+        headers: req.headers,
+        url: req.url,
+      };
+
+      const mockRes = {
+        statusCode: 200,
+        headers: {},
+        setHeader(name, value) {
+          this.headers[name] = value;
+          res.setHeader(name, value);
+          return this;
+        },
+        status(code) {
+          this.statusCode = code;
+          res.statusCode = code;
+          return this;
+        },
+        json(data) {
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(data));
+          return this;
+        },
+        end(data = '') {
+          res.end(data);
+          return this;
+        }
+      };
+
+      await handler(mockReq, mockRes);
+    } catch (error) {
+      console.error('API /api/delete-calculation error:', error);
+      res.statusCode = 500;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ success: false, message: 'Internal server error running delete calculation API locally.', error: error.message }));
+    }
+    return;
+  }
+
   // Static File Serving
   let relativeFilePath = pathname;
   if (relativeFilePath === '/') {
     relativeFilePath = '/index.html';
+  } else if (relativeFilePath === '/admin') {
+    relativeFilePath = '/admin.html';
   }
 
   // Check if serving aarthi-homes folder specifically, otherwise serve from root or aarthi-homes fallback
