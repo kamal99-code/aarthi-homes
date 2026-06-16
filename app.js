@@ -3,7 +3,7 @@
 // Local State
 let state = {
   clientName: '',
-  interestRate: 12.00,
+  interestRate: 1.00,
   endDate: '',
   transactions: []
 };
@@ -74,7 +74,7 @@ function init() {
         state.clientName = '';
         state.transactions = [];
         state.endDate = '';
-        state.interestRate = 12.00;
+        state.interestRate = 1.00;
         state.endDatePlusOne = false;
         localStorage.setItem('helix_calculator_state', JSON.stringify(state));
       }
@@ -84,14 +84,14 @@ function init() {
   } else {
     // Set default empty state
     state.clientName = '';
-    state.interestRate = 12.00;
+    state.interestRate = 1.00;
     state.endDate = '';
     state.transactions = [];
   }
 
   // Populate config fields
   clientNameInput.value = state.clientName || '';
-  interestRateInput.value = state.interestRate || '12.00';
+  interestRateInput.value = state.interestRate || '1.00';
   endDateInput.value = state.endDate || '';
   endDatePlusOneCheckbox.checked = state.endDatePlusOne || false;
 
@@ -106,7 +106,7 @@ function init() {
 // Save state to LocalStorage
 function saveStateToLocalStorage() {
   state.clientName = clientNameInput.value;
-  state.interestRate = parseFloat(interestRateInput.value) || 12.00;
+  state.interestRate = parseFloat(interestRateInput.value) || 1.00;
   state.endDate = endDateInput.value;
   state.endDatePlusOne = endDatePlusOneCheckbox.checked;
   localStorage.setItem('helix_calculator_state', JSON.stringify(state));
@@ -306,7 +306,7 @@ function calculateInterest() {
       if (currentBalance < 0) {
         // Negative balance represents overdraft. We calculate interest on the absolute debit amount.
         const overdraftAmount = Math.abs(currentBalance);
-        intervalInterest = overdraftAmount * (rate / 100) * (intervalDays / 360);
+        intervalInterest = overdraftAmount * (rate / 100) * (intervalDays / 30);
         
         totalOverdraftDays += intervalDays;
         if (overdraftAmount > peakOverdraft) {
